@@ -1,0 +1,198 @@
+---
+output:
+  word_document: default
+  pdf_document: default
+  html_document: default
+---
+## Correlaciones relevantes (positivas: +, negativas: -)
+
+- (-): Cuanto mayor es el torque promedio y peak alcanzadas durante la prueba isocinética (tanto para
+cuádriceps como para isquiotibiales), menor es la actividad muscular evaluada durante la electromiografía
+en las tres ventanas de medición.
+- (-): Una mayor variabilidad (medida como la desviación estándar) del torque del isquiotibial izquierdo
+se asocia a un menor índice de uso de los brazos en las pruebas de saltos.
+- (-): El grado de rodilla al cual ocurre el torque peak en el cuádriceps es inversamente proporcional a la actividad muscular
+evaluada mediante electromiografía obtenida en la ventana de medición inicial.
+- (-): Una mayor altura en el squat jump se asocia a menor actividad muscular en la primera ventana de medición de electromiografía
+- (+): Un mayor índice de utilización de brazo se asocia a una mayor actividad electromiográfica en las tres
+ventanas de medición.
+- (+): El grado de rodilla al cual ocurre el torque peak (normalizado) en isquiotibial derecho, se asocia a una
+mayor altura en el SJ y a una mayor potencia peak en el CMJ
+- (+): El torque peak de cuádriceps se relacionó con la potencia media y peak alcanzada en CMJ, y Abalakov.
+- (+): El trabajo por kilogramo (normalizado) de cuádriceps derecho se relaciona a una mayor tasa de desarrollo de
+fuerza en SJ y a una mayor fuerza peak en el abalakov.
+- (+): La potencia de cuádriceps (evaluada de la isocinética), se asocia a la potencia en los tres saltos (CMJ, SJ y ABK).
+- (+): Un mayor tiempo hasta el torque peak (normalizado) en el cuádricpes e isquiotibiales se asocia a una mayor altura en el SJ
+
+
+## Correlation Matrix (spearman-method)
+
+- iso_\*: mediciones de isocinética
+- quad_\*: cuádriceps
+- isquio_\*: isquiotibiales
+- deg_at_peak_\*: grado al cual ocurre el torque peak
+- sd_torque_\*: desviación estándar del torque
+- work_\*: trabajo en joules
+- \*_raw: variable sin normalizar
+- \*_norm: variable normalizada
+- time_to_peak_\*: tiempo en segundos hasta el torque peak
+- jump_\*: mediciones de salto
+- emg_\*: mediciones de electromiografía
+
+Nota: Se muestran solo aquellas relaciones significativas al 5%
+
+| Parameter1                       |            Parameter2 |   rho |         95% CI |        S |         p |
+|----------------------------------|-----------------------|-------|----------------|----------|-----------|
+| iso_mean_torque_quad_der_raw     |            emg_mean_1 | -1.00 | [-1.00, -1.00] |   112.00 | < .001*** |
+| iso_mean_torque_quad_der_raw     |            emg_mean_2 | -0.96 | [-1.00, -0.76] |   110.00 | < .001*** |
+| iso_mean_torque_quad_der_raw     |          emg_median_3 | -0.96 | [-1.00, -0.76] |   110.00 | < .001*** |
+| iso_peak_torque_isquio_der_raw   |            emg_mean_2 | -0.96 | [-1.00, -0.76] |   110.00 | < .001*** |
+| iso_peak_torque_isquio_der_raw   |          emg_median_3 | -0.96 | [-1.00, -0.76] |   110.00 | < .001*** |
+| iso_mean_torque_isquio_der_raw   |            emg_mean_2 | -0.96 | [-1.00, -0.76] |   110.00 | < .001*** |
+| iso_mean_torque_isquio_der_raw   |          emg_median_3 | -0.96 | [-1.00, -0.76] |   110.00 | < .001*** |
+| iso_mean_torque_quad_der_raw     |            emg_mean_3 | -0.93 | [-0.99, -0.56] |   108.00 | 0.003**   |
+| iso_peak_torque_isquio_der_raw   |            emg_mean_3 | -0.93 | [-0.99, -0.56] |   108.00 | 0.003**   |
+| iso_mean_torque_isquio_der_raw   |            emg_mean_3 | -0.93 | [-0.99, -0.56] |   108.00 | 0.003**   |
+| iso_sd_torque_isquio_izq_raw     |    jump_ind_arm_usage | -0.90 | [-0.99, -0.44] |   106.45 | 0.006**   |
+| iso_peak_torque_quad_der_raw     |            emg_mean_1 | -0.89 | [-0.99, -0.40] |   106.00 | 0.007**   |
+| iso_peak_torque_isquio_der_raw   |            emg_mean_1 | -0.89 | [-0.99, -0.40] |   106.00 | 0.007**   |
+| iso_mean_torque_isquio_der_raw   |            emg_mean_1 | -0.89 | [-0.99, -0.40] |   106.00 | 0.007**   |
+| iso_deg_at_peak_quad_izq_norm    |          emg_median_1 | -0.89 | [-0.98, -0.40] |   105.90 | 0.007**   |
+| iso_peak_torque_quad_der_raw     |            emg_mean_2 | -0.86 | [-0.98, -0.27] |   104.00 | 0.014*    |
+| iso_peak_torque_quad_der_raw     |          emg_median_3 | -0.86 | [-0.98, -0.27] |   104.00 | 0.014*    |
+| iso_peak_torque_quad_der_norm    |            emg_mean_3 | -0.86 | [-0.98, -0.27] |   104.00 | 0.014*    |
+| iso_mean_torque_quad_der_raw     |          emg_median_1 | -0.86 | [-0.98, -0.27] |   104.00 | 0.014*    |
+| iso_mean_torque_quad_der_raw     |          emg_median_2 | -0.86 | [-0.98, -0.27] |   104.00 | 0.014*    |
+| iso_mean_torque_quad_der_raw     |            emg_peak_2 | -0.86 | [-0.98, -0.27] |   104.00 | 0.014*    |
+| iso_mean_torque_quad_der_raw     |            emg_peak_3 | -0.86 | [-0.98, -0.27] |   104.00 | 0.014*    |
+| iso_mean_torque_quad_der_norm    |            emg_mean_3 | -0.86 | [-0.98, -0.27] |   104.00 | 0.014*    |
+| iso_work_quad_izq_norm           |            emg_peak_1 | -0.86 | [-0.98, -0.27] |   104.00 | 0.014*    |
+| iso_peak_torque_isquio_der_raw   |          emg_median_2 | -0.86 | [-0.98, -0.27] |   104.00 | 0.014*    |
+| iso_peak_torque_isquio_der_raw   |            emg_peak_2 | -0.86 | [-0.98, -0.27] |   104.00 | 0.014*    |
+| iso_mean_torque_isquio_der_raw   |          emg_median_2 | -0.86 | [-0.98, -0.27] |   104.00 | 0.014*    |
+| iso_mean_torque_isquio_der_raw   |            emg_peak_2 | -0.86 | [-0.98, -0.27] |   104.00 | 0.014*    |
+| iso_deg_at_peak_quad_izq_norm    |            emg_mean_3 | -0.84 | [-0.98, -0.20] |   102.84 | 0.019*    |
+| iso_sd_torque_isquio_izq_raw     |          emg_median_1 | -0.83 | [-0.98, -0.17] |   102.42 | 0.021*    |
+| iso_peak_torque_quad_der_raw     |          emg_median_1 | -0.82 | [-0.97, -0.15] |   102.00 | 0.023*    |
+| iso_peak_torque_quad_der_norm    |            emg_mean_2 | -0.82 | [-0.97, -0.15] |   102.00 | 0.023*    |
+| iso_peak_torque_quad_der_norm    |          emg_median_3 | -0.82 | [-0.97, -0.15] |   102.00 | 0.023*    |
+| iso_mean_torque_quad_der_raw     |    jump_ind_arm_usage | -0.82 | [-0.97, -0.15] |   102.00 | 0.023*    |
+| iso_mean_torque_quad_der_norm    |            emg_peak_3 | -0.82 | [-0.97, -0.15] |   102.00 | 0.023*    |
+| iso_time_to_peak_quad_izq_norm   | jump_cmj_time_to_peak | -0.82 | [-0.97, -0.15] |   102.00 | 0.023*    |
+| iso_power_per_kg_isquio_der_norm |            emg_mean_2 | -0.82 | [-0.97, -0.15] |   102.00 | 0.023*    |
+| iso_power_per_kg_isquio_der_norm |          emg_median_3 | -0.82 | [-0.97, -0.15] |   102.00 | 0.023*    |
+| iso_deg_at_peak_quad_izq_norm    |    jump_ind_arm_usage | -0.80 | [-0.97, -0.09] |   100.81 | 0.031*    |
+| iso_mean_torque_quad_der_norm    |            emg_mean_2 | -0.79 | [-0.97, -0.05] |   100.00 | 0.036*    |
+| iso_mean_torque_quad_der_norm    |          emg_median_2 | -0.79 | [-0.97, -0.05] |   100.00 | 0.036*    |
+| iso_mean_torque_quad_der_norm    |            emg_peak_2 | -0.79 | [-0.97, -0.05] |   100.00 | 0.036*    |
+| iso_mean_torque_quad_der_norm    |          emg_median_3 | -0.79 | [-0.97, -0.05] |   100.00 | 0.036*    |
+| iso_work_per_kg_quad_izq_norm    |            emg_peak_1 | -0.79 | [-0.97, -0.05] |   100.00 | 0.036*    |
+| iso_peak_torque_isquio_der_norm  |            emg_mean_3 | -0.79 | [-0.97, -0.05] |   100.00 | 0.036*    |
+| iso_power_isquio_der_norm        |            emg_mean_2 | -0.79 | [-0.97, -0.05] |   100.00 | 0.036*    |
+| iso_power_isquio_der_norm        |          emg_median_3 | -0.79 | [-0.97, -0.05] |   100.00 | 0.036*    |
+| iso_peak_torque_isquio_izq_raw   |          emg_median_1 | -0.79 | [-0.97, -0.05] |   100.00 | 0.036*    |
+| iso_mean_torque_isquio_izq_raw   |            emg_mean_1 | -0.79 | [-0.97, -0.05] |   100.00 | 0.036*    |
+| iso_deg_at_peak_quad_izq_norm    |            emg_mean_1 | -0.78 | [-0.97, -0.04] |    99.79 | 0.038*    |
+| iso_deg_at_peak_quad_izq_norm    |            emg_peak_3 | -0.78 | [-0.97, -0.04] |    99.79 | 0.038*    |
+| jump_sj_altura_m                 |          emg_median_1 | -0.69 | [-0.92, -0.14] |   372.00 | 0.019*    |
+| jump_ind_arm_usage               |            emg_mean_2 |  0.61 | [-0.01,  0.89] |    86.00 | 0.047*    |
+| jump_ind_arm_usage               |          emg_median_3 |  0.61 | [-0.01,  0.89] |    86.00 | 0.047*    |
+| jump_ind_arm_usage               |            emg_peak_3 |  0.68 | [ 0.12,  0.91] |    70.00 | 0.021*    |
+| jump_ind_arm_usage               |            emg_peak_2 |  0.69 | [ 0.14,  0.92] |    68.00 | 0.019*    |
+| jump_ind_arm_usage               |            emg_mean_1 |  0.75 | [ 0.26,  0.94] |    54.00 | 0.007**   |
+| iso_deg_at_peak_isquio_der_norm  |   jump_cmj_power_peak |  0.76 | [-0.02,  0.96] |    13.62 | 0.049*    |
+| iso_deg_at_peak_isquio_der_norm  |      jump_sj_altura_m |  0.76 | [-0.02,  0.96] |    13.62 | 0.049*    |
+| iso_deg_at_peak_quad_izq_norm    |      jump_sj_altura_m |  0.78 | [ 0.04,  0.97] |    12.21 | 0.038*    |
+| iso_peak_torque_quad_der_raw     |  jump_abkv_power_mean |  0.79 | [ 0.05,  0.97] |    12.00 | 0.036*    |
+| iso_mean_torque_quad_der_raw     |   jump_cmj_power_peak |  0.79 | [ 0.05,  0.97] |    12.00 | 0.036*    |
+| iso_mean_torque_quad_der_raw     |  jump_abkv_power_mean |  0.79 | [ 0.05,  0.97] |    12.00 | 0.036*    |
+| iso_work_per_kg_quad_der_norm    |      jump_sj_rdf_mean |  0.79 | [ 0.05,  0.97] |    12.00 | 0.036*    |
+| iso_work_per_kg_quad_der_norm    | jump_abkv_fuerza_peak |  0.79 | [ 0.05,  0.97] |    12.00 | 0.036*    |
+| iso_power_quad_der_norm          |  jump_abkv_power_mean |  0.79 | [ 0.05,  0.97] |    12.00 | 0.036*    |
+| iso_peak_torque_quad_izq_raw     |   jump_cmj_power_peak |  0.79 | [ 0.05,  0.97] |    12.00 | 0.036*    |
+| iso_time_to_peak_quad_izq_norm   |     jump_cmj_rdf_mean |  0.79 | [ 0.05,  0.97] |    12.00 | 0.036*    |
+| iso_power_quad_izq_norm          |  jump_cmj_fuerza_peak |  0.79 | [ 0.05,  0.97] |    12.00 | 0.036*    |
+| iso_power_per_kg_quad_izq_norm   |   jump_sj_fuerza_peak |  0.79 | [ 0.05,  0.97] |    12.00 | 0.036*    |
+| iso_power_per_kg_quad_izq_norm   | jump_abkv_fuerza_peak |  0.79 | [ 0.05,  0.97] |    12.00 | 0.036*    |
+| iso_work_isquio_der_norm         |   jump_sj_fuerza_peak |  0.79 | [ 0.05,  0.97] |    12.00 | 0.036*    |
+| iso_work_per_kg_isquio_der_norm  |  jump_ind_elasticidad |  0.79 | [ 0.05,  0.97] |    12.00 | 0.036*    |
+| iso_work_per_kg_isquio_der_norm  |    jump_sj_power_mean |  0.79 | [ 0.05,  0.97] |    12.00 | 0.036*    |
+| iso_power_isquio_der_norm        |   jump_cmj_power_peak |  0.79 | [ 0.05,  0.97] |    12.00 | 0.036*    |
+| iso_power_isquio_der_norm        |      jump_sj_rdf_mean |  0.79 | [ 0.05,  0.97] |    12.00 | 0.036*    |
+| iso_mean_torque_isquio_izq_raw   |  jump_cmj_fuerza_peak |  0.79 | [ 0.05,  0.97] |    12.00 | 0.036*    |
+| iso_time_to_peak_isquio_izq_norm |      jump_sj_rdf_peak |  0.79 | [ 0.05,  0.97] |    12.00 | 0.036*    |
+| iso_time_to_peak_isquio_izq_norm |    jump_abkv_rdf_mean |  0.79 | [ 0.05,  0.97] |    12.00 | 0.036*    |
+| iso_work_isquio_izq_norm         |   jump_cmj_power_peak |  0.79 | [ 0.07,  0.97] |    11.60 | 0.033*    |
+| jump_ind_arm_usage               |          emg_median_1 |  0.81 | [ 0.39,  0.95] |    42.00 | 0.003**   |
+| iso_time_to_peak_quad_der_norm   |     jump_cmj_altura_m |  0.82 | [ 0.15,  0.97] |    10.00 | 0.023*    |
+| iso_power_quad_der_norm          |   jump_sj_fuerza_peak |  0.82 | [ 0.15,  0.97] |    10.00 | 0.023*    |
+| iso_peak_torque_quad_izq_raw     |  jump_abkv_power_mean |  0.82 | [ 0.15,  0.97] |    10.00 | 0.023*    |
+| iso_mean_torque_quad_izq_raw     |      jump_sj_rdf_mean |  0.82 | [ 0.15,  0.97] |    10.00 | 0.023*    |
+| iso_mean_torque_quad_izq_norm    |   jump_cmj_power_mean |  0.82 | [ 0.15,  0.97] |    10.00 | 0.023*    |
+| iso_time_to_peak_quad_izq_norm   |  jump_sj_time_to_peak |  0.82 | [ 0.15,  0.97] |    10.00 | 0.023*    |
+| iso_work_quad_izq_norm           |  jump_abkv_power_mean |  0.82 | [ 0.15,  0.97] |    10.00 | 0.023*    |
+| iso_power_quad_izq_norm          | jump_abkv_fuerza_peak |  0.82 | [ 0.15,  0.97] |    10.00 | 0.023*    |
+| iso_peak_torque_isquio_der_raw   |   jump_sj_fuerza_peak |  0.82 | [ 0.15,  0.97] |    10.00 | 0.023*    |
+| iso_mean_torque_isquio_der_raw   |   jump_sj_fuerza_peak |  0.82 | [ 0.15,  0.97] |    10.00 | 0.023*    |
+| iso_mean_torque_isquio_der_norm  |     jump_cmj_rdf_mean |  0.82 | [ 0.15,  0.97] |    10.00 | 0.023*    |
+| iso_mean_torque_isquio_izq_raw   |      jump_sj_rdf_mean |  0.82 | [ 0.15,  0.97] |    10.00 | 0.023*    |
+| iso_time_to_peak_isquio_izq_norm |     jump_cmj_altura_m |  0.82 | [ 0.15,  0.97] |    10.00 | 0.023*    |
+| iso_power_isquio_izq_norm        |   jump_cmj_power_mean |  0.82 | [ 0.15,  0.97] |    10.00 | 0.023*    |
+| iso_power_isquio_izq_norm        |   jump_sj_fuerza_peak |  0.82 | [ 0.15,  0.97] |    10.00 | 0.023*    |
+| iso_power_isquio_izq_norm        | jump_abkv_fuerza_peak |  0.82 | [ 0.15,  0.97] |    10.00 | 0.023*    |
+| iso_deg_at_peak_quad_der_norm    |      jump_sj_rdf_peak |  0.85 | [ 0.23,  0.98] |     8.57 | 0.016*    |
+| iso_sd_torque_isquio_izq_raw     |  jump_abkv_power_peak |  0.85 | [ 0.23,  0.98] |     8.57 | 0.016*    |
+| iso_peak_torque_quad_der_raw     |      jump_sj_rdf_mean |  0.86 | [ 0.27,  0.98] |     8.00 | 0.014*    |
+| iso_mean_torque_quad_der_raw     |   jump_sj_fuerza_peak |  0.86 | [ 0.27,  0.98] |     8.00 | 0.014*    |
+| iso_peak_torque_quad_izq_raw     |      jump_sj_rdf_mean |  0.86 | [ 0.27,  0.98] |     8.00 | 0.014*    |
+| iso_mean_torque_quad_izq_raw     |  jump_cmj_fuerza_peak |  0.86 | [ 0.27,  0.98] |     8.00 | 0.014*    |
+| iso_mean_torque_quad_izq_raw     | jump_abkv_fuerza_peak |  0.86 | [ 0.27,  0.98] |     8.00 | 0.014*    |
+| iso_work_per_kg_quad_izq_norm    |    jump_sj_power_peak |  0.86 | [ 0.27,  0.98] |     8.00 | 0.014*    |
+| iso_power_quad_izq_norm          |   jump_sj_fuerza_peak |  0.86 | [ 0.27,  0.98] |     8.00 | 0.014*    |
+| iso_power_quad_izq_norm          |      jump_sj_rdf_mean |  0.86 | [ 0.27,  0.98] |     8.00 | 0.014*    |
+| iso_power_per_kg_quad_izq_norm   |  jump_cmj_fuerza_peak |  0.86 | [ 0.27,  0.98] |     8.00 | 0.014*    |
+| iso_peak_torque_isquio_der_raw   |    jump_sj_power_peak |  0.86 | [ 0.27,  0.98] |     8.00 | 0.014*    |
+| iso_mean_torque_isquio_der_raw   |    jump_sj_power_peak |  0.86 | [ 0.27,  0.98] |     8.00 | 0.014*    |
+| iso_sd_torque_isquio_der_raw     |   jump_cmj_power_mean |  0.86 | [ 0.27,  0.98] |     8.00 | 0.014*    |
+| iso_work_isquio_der_norm         |    jump_sj_power_peak |  0.86 | [ 0.27,  0.98] |     8.00 | 0.014*    |
+| iso_power_per_kg_isquio_der_norm |   jump_sj_fuerza_peak |  0.86 | [ 0.27,  0.98] |     8.00 | 0.014*    |
+| iso_power_per_kg_isquio_der_norm |    jump_sj_power_peak |  0.86 | [ 0.27,  0.98] |     8.00 | 0.014*    |
+| iso_peak_torque_isquio_izq_raw   |   jump_sj_fuerza_peak |  0.86 | [ 0.27,  0.98] |     8.00 | 0.014*    |
+| iso_mean_torque_isquio_izq_raw   |   jump_cmj_power_peak |  0.86 | [ 0.27,  0.98] |     8.00 | 0.014*    |
+| iso_power_isquio_izq_norm        |   jump_cmj_power_peak |  0.86 | [ 0.27,  0.98] |     8.00 | 0.014*    |
+| iso_sd_torque_isquio_izq_raw     |     jump_cmj_altura_m |  0.88 | [ 0.36,  0.98] |     6.56 | 0.008**   |
+| iso_peak_torque_quad_der_raw     | jump_abkv_fuerza_peak |  0.89 | [ 0.40,  0.99] |     6.00 | 0.007**   |
+| iso_power_per_kg_quad_der_norm   | jump_abkv_fuerza_peak |  0.89 | [ 0.40,  0.99] |     6.00 | 0.007**   |
+| iso_peak_torque_quad_izq_raw     |   jump_sj_fuerza_peak |  0.89 | [ 0.40,  0.99] |     6.00 | 0.007**   |
+| iso_time_to_peak_quad_izq_norm   |     jump_cmj_altura_m |  0.89 | [ 0.40,  0.99] |     6.00 | 0.007**   |
+| iso_work_quad_izq_norm           |    jump_sj_power_peak |  0.89 | [ 0.40,  0.99] |     6.00 | 0.007**   |
+| iso_work_quad_izq_norm           | jump_abkv_fuerza_peak |  0.89 | [ 0.40,  0.99] |     6.00 | 0.007**   |
+| iso_peak_torque_isquio_der_raw   |  jump_cmj_fuerza_peak |  0.89 | [ 0.40,  0.99] |     6.00 | 0.007**   |
+| iso_mean_torque_isquio_der_raw   |  jump_cmj_fuerza_peak |  0.89 | [ 0.40,  0.99] |     6.00 | 0.007**   |
+| iso_work_isquio_der_norm         | jump_abkv_fuerza_peak |  0.89 | [ 0.40,  0.99] |     6.00 | 0.007**   |
+| iso_work_per_kg_isquio_der_norm  |    jump_sj_power_peak |  0.89 | [ 0.40,  0.99] |     6.00 | 0.007**   |
+| iso_power_isquio_der_norm        |  jump_cmj_fuerza_peak |  0.89 | [ 0.40,  0.99] |     6.00 | 0.007**   |
+| iso_power_isquio_der_norm        | jump_abkv_fuerza_peak |  0.89 | [ 0.40,  0.99] |     6.00 | 0.007**   |
+| iso_peak_torque_isquio_izq_raw   |   jump_cmj_power_peak |  0.89 | [ 0.40,  0.99] |     6.00 | 0.007**   |
+| iso_work_isquio_izq_norm         |      jump_sj_rdf_mean |  0.90 | [ 0.44,  0.99] |     5.55 | 0.006**   |
+| iso_peak_torque_quad_der_raw     |   jump_cmj_power_peak |  0.93 | [ 0.56,  0.99] |     4.00 | 0.003**   |
+| iso_peak_torque_quad_izq_raw     | jump_abkv_fuerza_peak |  0.93 | [ 0.56,  0.99] |     4.00 | 0.003**   |
+| iso_peak_torque_quad_izq_norm    |   jump_cmj_power_mean |  0.93 | [ 0.56,  0.99] |     4.00 | 0.003**   |
+| iso_mean_torque_quad_izq_raw     |   jump_sj_fuerza_peak |  0.93 | [ 0.56,  0.99] |     4.00 | 0.003**   |
+| iso_work_per_kg_quad_izq_norm    |    jump_sj_power_mean |  0.93 | [ 0.56,  0.99] |     4.00 | 0.003**   |
+| iso_time_to_peak_isquio_der_norm |      jump_sj_altura_m |  0.93 | [ 0.56,  0.99] |     4.00 | 0.003**   |
+| iso_work_isquio_der_norm         |  jump_cmj_fuerza_peak |  0.93 | [ 0.56,  0.99] |     4.00 | 0.003**   |
+| iso_work_per_kg_isquio_der_norm  |  jump_cmj_fuerza_peak |  0.93 | [ 0.56,  0.99] |     4.00 | 0.003**   |
+| iso_peak_torque_isquio_izq_raw   | jump_abkv_fuerza_peak |  0.93 | [ 0.56,  0.99] |     4.00 | 0.003**   |
+| iso_mean_torque_isquio_izq_raw   |   jump_sj_fuerza_peak |  0.93 | [ 0.56,  0.99] |     4.00 | 0.003**   |
+| iso_work_per_kg_isquio_izq_norm  |   jump_cmj_power_mean |  0.93 | [ 0.56,  0.99] |     4.00 | 0.003**   |
+| iso_power_isquio_izq_norm        |      jump_sj_rdf_mean |  0.93 | [ 0.56,  0.99] |     4.00 | 0.003**   |
+| iso_work_isquio_izq_norm         |   jump_cmj_power_mean |  0.94 | [ 0.61,  0.99] |     3.53 | 0.002**   |
+| iso_peak_torque_quad_der_raw     |   jump_sj_fuerza_peak |  0.96 | [ 0.76,  1.00] |     2.00 | < .001*** |
+| iso_time_to_peak_quad_der_norm   |      jump_sj_altura_m |  0.96 | [ 0.76,  1.00] |     2.00 | < .001*** |
+| iso_work_quad_der_norm           | jump_abkv_fuerza_peak |  0.96 | [ 0.76,  1.00] |     2.00 | < .001*** |
+| iso_power_isquio_der_norm        |   jump_sj_fuerza_peak |  0.96 | [ 0.76,  1.00] |     2.00 | < .001*** |
+| iso_mean_torque_isquio_izq_raw   | jump_abkv_fuerza_peak |  0.96 | [ 0.76,  1.00] |     2.00 | < .001*** |
+| iso_power_quad_der_norm          | jump_abkv_fuerza_peak |  1.00 | [ 1.00,  1.00] | 1.24e-14 | < .001*** |
+| iso_power_per_kg_isquio_der_norm |  jump_cmj_fuerza_peak |  1.00 | [ 1.00,  1.00] | 1.24e-14 | < .001*** |
+: Correlations. p-value adjustment method: none; Observations: 7-11.
