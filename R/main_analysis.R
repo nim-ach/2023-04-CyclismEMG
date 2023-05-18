@@ -8,8 +8,15 @@ cyclist[, sapply(cyclist, is.numeric), with = FALSE] |>
 
 corr <- correlation::correlation(cyclist[, sapply(cyclist, is.numeric), with = FALSE], p_adjust = "none", method = "spearman")
 
-dplyr::filter(.data = corr, p < 0.05,
+cor_names <- (signif_cor <- dplyr::filter(.data = corr, p < 0.05,
               !((Parameter1 %like% "^emg") & (Parameter2 %like% "^emg")),
               !((Parameter1 %like% "^jump_") & (Parameter2 %like% "^jump_")),
               !((Parameter1 %like% "^iso_") & (Parameter2 %like% "^iso_"))) |>
-  dplyr::arrange(rho)
+  dplyr::arrange(rho)) |>
+  dplyr::select(Parameter1, Parameter2) |>
+  as.vector() |>  unlist() |> unname() |> unique()
+
+ggstatsplot::ggcorrmat(cyclist,
+                       cor.vars.names = cor_names,
+                       p.adjust.method = "none",
+                       type = "np")
