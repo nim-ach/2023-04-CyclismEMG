@@ -22,8 +22,17 @@ mayor altura en el SJ y a una mayor potencia peak en el CMJ
 - (+): El trabajo por kilogramo (normalizado) de cuádriceps derecho se relaciona a una mayor tasa de desarrollo de
 fuerza en SJ y a una mayor fuerza peak en el abalakov.
 - (+): La potencia de cuádriceps (evaluada de la isocinética), se asocia a la potencia en los tres saltos (CMJ, SJ y ABK).
-- (+): Un mayor tiempo hasta el torque peak (normalizado) en el cuádricpes e isquiotibiales se asocia a una mayor altura en el SJ
+- (+): Un mayor tiempo hasta el torque peak (normalizado) en el cuádriceps e isquiotibiales se asocia a una mayor altura en el SJ
 
+
+## Resultados
+
+- Una menor actividad electromiográfica media observada durante el FTP se asocia con un mayor torque medio, 
+tanto para cuádriceps como para isquiotibiales. Razonamiento: Esto tiene sentido, dado que aquellos individuos que
+necesitan activar menos su cuádriceps e isquiotibiales podrían tener mayor capacidad para manejar la demanda impuesta de la prueba,
+y por ende no necesitarian activar una mayor proporción del músculo durante la misma, lo que naturalmente se reflejaría en un
+mayor torque medio alcanzado durante la prueba de isocinética.
+- 
 
 ## Correlation Matrix (spearman-method)
 
