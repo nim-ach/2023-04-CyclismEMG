@@ -34,7 +34,7 @@ quad_model <- brm(
   prior = prior(prior = student_t(3, 0, 5), class = b),
 
   ## Datos a usar
-  data = quad_iso_data,
+  data = quad_data,
 
   ## Familia de distribución a usar
   family = gaussian(),
@@ -46,15 +46,17 @@ quad_model <- brm(
   seed = 1234
 )
 
-saveRDS(quad_model, file = "R/Bayesian models/models/quad_torque_&_emg.RDS")
+saveRDS(quad_model, file = "R/bda/bm/quad_iso_torque_&_emg.RDS")
 
 ## Valoración del ajuste del modelo
-pp_check(quad_model, ndraws = 200)  # shows dens_overlay plot by default
-pp_check(quad_model, type = "error_hist", ndraws = 12)
-pp_check(quad_model, type = "scatter_avg")
-pp_check(quad_model, type = "stat_2d")
-pp_check(quad_model, type = "loo_ribbon")
-pp_check(quad_model, type = "stat_freqpoly", ndraws = 1e4, binwidth = 2)
+# pp_check(quad_model, ndraws = 200)  # shows dens_overlay plot by default
+# pp_check(quad_model, type = "error_hist", ndraws = 12)
+# pp_check(quad_model, type = "scatter_avg")
+# pp_check(quad_model, type = "stat_2d")
+# pp_check(quad_model, type = "loo_ribbon")
+# pp_check(quad_model, type = "stat_freqpoly", ndraws = 1e4, binwidth = 2)
+#
+# loo(quad_model, reloo = TRUE)
 
 
 ########################################################
@@ -73,9 +75,9 @@ isqt_data <- cyclist[i = !is.na(iso_mean_torque_isquio_der_raw),
                      by = sujetos]
 
 ## Vemos los priors por defecto
-get_prior(formula = mean_torque_isquio | se(sd_torque_isquio) ~ emg_mean_1, data = isquio_iso_data)
+get_prior(formula = mean_torque_isquio | se(sd_torque_isquio) ~ emg_mean_1, data = isqt_data)
 
-model_2 <- brm(
+isqt_model <- brm(
   ## Especificamos el modelo
   formula = mean_torque_isquio | se(sd_torque_isquio) ~ emg_mean_1,
 
@@ -83,7 +85,7 @@ model_2 <- brm(
   prior = prior(prior = student_t(3, 0, 5), class = b),
 
   ## Datos a usar
-  data = isquio_iso_data,
+  data = isqt_data,
 
   ## Familia de distribución a usar
   family = gaussian(),
@@ -95,12 +97,14 @@ model_2 <- brm(
   seed = 1234
 )
 
-saveRDS(model_2, file = "R/Bayesian models/models/isquios_torque_&_emg.RDS")
+saveRDS(isqt_model, file = "R/bda/bm/isquios_iso_torque_&_emg.RDS")
 
 ## Valoración del ajuste del modelo
-pp_check(model_2, ndraws = 200)  # shows dens_overlay plot by default
-pp_check(model_2, type = "error_hist", ndraws = 12)
-pp_check(model_2, type = "scatter_avg")
-pp_check(model_2, type = "stat_2d")
-pp_check(model_2, type = "loo_ribbon")
-pp_check(model_2, type = "stat_freqpoly", ndraws = 1e4, binwidth = 2)
+# pp_check(isqt_model, ndraws = 200)  # shows dens_overlay plot by default
+# pp_check(isqt_model, type = "error_hist", ndraws = 12)
+# pp_check(isqt_model, type = "scatter_avg")
+# pp_check(isqt_model, type = "stat_2d")
+# pp_check(isqt_model, type = "loo_ribbon")
+# pp_check(isqt_model, type = "stat_freqpoly", ndraws = 1e4, binwidth = 2)
+#
+# loo(isqt_model, reloo = TRUE)

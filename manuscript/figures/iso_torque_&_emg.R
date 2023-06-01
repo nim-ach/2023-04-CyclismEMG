@@ -20,13 +20,13 @@ library(patchwork) ## Para unir los gráficos en uno solo
 data("cyclist")
 
 ## Cargamos los modelos ajustados
-if (any(!file.exists("R/bda/bm/isquios_torque_&_emg.RDS",
-                     "R/bda/bm/quad_torque_&_emg.RDS"))) {
+if (any(!file.exists("R/bda/bm/isquios_iso_torque_&_emg.RDS",
+                     "R/bda/bm/quad_iso_torque_&_emg.RDS"))) {
   stop("Uno o más modelos no han sido generados")
 }
 
-isqt_mod <- readRDS("R/bda/bm/isquios_torque_&_emg.RDS")
-quad_mod <- readRDS("R/bda/bm/quad_torque_&_emg.RDS")
+isqt_mod <- readRDS("R/bda/bm/isquios_iso_torque_&_emg.RDS")
+quad_mod <- readRDS("R/bda/bm/quad_iso_torque_&_emg.RDS")
 
 # Creamos objetos y datos intermedios -------------------------------------
 
@@ -196,5 +196,5 @@ plots <- plots +
   plot_annotation(tag_levels = list(c("A"), "1")) &
   theme(legend.position = "top")
 
-ggsave("manuscript/figures/torque_&_emg.pdf", plots, "pdf", width = 12, height = 8, units = "in")
-ggsave("manuscript/figures/torque_&_emg.jpeg", plots, "jpeg", width = 12, height = 8, units = "in", dpi = 300)
+ggsave("manuscript/figures/iso_torque_&_emg.pdf", plots, "pdf", width = 12, height = 8, units = "in")
+ggsave("manuscript/figures/iso_torque_&_emg.jpeg", plots, "jpeg", width = 12, height = 8, units = "in", dpi = 300)
