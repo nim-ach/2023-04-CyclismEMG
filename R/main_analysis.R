@@ -16,7 +16,3 @@ cor_names <- (signif_cor <- dplyr::filter(.data = corr, p < 0.05,
   dplyr::select(Parameter1, Parameter2) |>
   as.vector() |>  unlist() |> unname() |> unique()
 
-ggstatsplot::ggcorrmat(cyclist,
-                       cor.vars.names = cor_names,
-                       p.adjust.method = "none",
-                       type = "np")
