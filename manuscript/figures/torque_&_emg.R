@@ -91,9 +91,9 @@ scatter_plot = function(pred_data, raw_data, muscle = NULL) {
     stop("`muscle` must be one of \"quad\" or \"isquio\"")
   }
   if (grepl("quad|cuad", muscle, TRUE)) {
-    ylab = "quadriceps"; point_var = "mean_torque_quad"
+    ylab = "quadriceps"; point_var = "mean_torque_quad"; sd_var = "sd_torque_quad"
   } else if (grepl("hams|isquio", muscle, TRUE)) {
-    ylab = "hamstrings"; point_var = "mean_torque_isquio"
+    ylab = "hamstrings"; point_var = "mean_torque_isquio"; sd_var = "sd_torque_isquio"
   } else stop("`muscle` must be one of \"quad\" or \"isquio\"")
 
   ggplot(pred_data, aes(emg_mean_1, Estimate)) +
@@ -103,7 +103,11 @@ scatter_plot = function(pred_data, raw_data, muscle = NULL) {
     geom_ribbon(aes(ymin = Q25, ymax = Q75, fill = "50%")) +
     scale_fill_manual(values = `names<-`(RColorBrewer::brewer.pal(4, "Blues"), c("99%", "95%", "80%", "50%"))) +
     geom_line() +
-    geom_point(data = raw_data, aes(emg_mean_1, .data[[point_var]])) +
+    geom_point(data = raw_data, aes(emg_mean_1, .data[[point_var]]), inherit.aes = FALSE) +
+    geom_linerange(data = raw_data, aes(x = emg_mean_1,
+                                        ymin = .data[[point_var]] + .data[[sd_var]] * qnorm(.025),
+                                        ymax = .data[[point_var]] + .data[[sd_var]] * qnorm(.975)),
+                  inherit.aes = FALSE) +
     #scale_y_continuous(n.breaks = 6, limits = c(0, NA)) +
     scale_x_continuous(#limits = c(0, NA),
                        labels = function(x) scales::percent(x/100),
