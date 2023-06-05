@@ -68,8 +68,10 @@ saveRDS(quad_model, file = "R/bda/bm/quad_iso_torque_&_emg.RDS")
 
 isqt_data <- cyclist[i = !is.na(iso_mean_torque_isquio_der_raw),
                      j = list(
-                       mean_torque_isquio = mean(x = c(iso_mean_torque_isquio_der_raw, iso_mean_torque_isquio_izq_raw)),
-                       sd_torque_isquio = mean(x = c(iso_sd_torque_isquio_der_raw, iso_sd_torque_isquio_izq_raw)),
+                       mean_torque_isquio = mean(x = c(iso_mean_torque_isquio_der_raw,
+                                                       iso_mean_torque_isquio_izq_raw)),
+                       sd_torque_isquio = mean(x = c(iso_sd_torque_isquio_der_raw,
+                                                     iso_sd_torque_isquio_izq_raw)),
                        emg_mean_1
                      ),
                      by = sujetos]

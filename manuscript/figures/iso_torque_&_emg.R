@@ -193,8 +193,13 @@ plots <- (guide_area() / (((p1 + p3) / p2) | ((q1 + q3) / q2)))
 
 plots <- plots +
   plot_layout(guides = "collect", heights = c(1,9)) +
-  plot_annotation(tag_levels = list(c("A"), "1")) &
-  theme(legend.position = "top")
+  plot_annotation(tag_levels = list("I"), tag_suffix = ".") &
+  theme(legend.position = "top",
+        axis.title = element_text(size = 8),
+        axis.title.x = element_text(margin = margin(5,0,5,0)),
+        axis.title.y = element_text(margin = margin(0,5,0,5)),
+        axis.text = element_text(size = 8),
+        plot.tag = element_text(size = 10))
 
-ggsave("manuscript/figures/iso_torque_&_emg.pdf", plots, "pdf", width = 12, height = 8, units = "in")
-ggsave("manuscript/figures/iso_torque_&_emg.jpeg", plots, "jpeg", width = 12, height = 8, units = "in", dpi = 300)
+ggsave("manuscript/figures/iso_torque_&_emg.pdf", plots, "pdf", width = 12, height = 5, units = "in")
+ggsave("manuscript/figures/iso_torque_&_emg.jpeg", plots, "jpeg", width = 12, height = 5, units = "in", dpi = 400)
