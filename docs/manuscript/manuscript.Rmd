@@ -1,0 +1,129 @@
+---
+title: ""
+bibliography: "misc/ref.bib"
+csl: "misc/vancouver.csl"
+output: 
+  word_document:
+    reference_docx: "ref.docx"
+---
+
+**Título**: [título]
+
+**Title**: [title]
+
+**Autores**: Primer autor,^1^ Segundo autor,^2^ Tercer autor,^3^ Cuarto autor,^4^ Quinto autor,^5^ Sexto autor.^6^ \*
+
+::: {custom-style="Afiliation"}
+^1^ Afiliación, lugar.
+
+^2^ Afiliación, lugar.
+
+^3^ Afiliación, lugar.
+
+^4^ Afiliación, lugar.
+
+^5^ Afiliación, lugar.
+
+^6^ Afiliación, lugar.
+:::
+
+### \*Autor de correspondencia 
+
+Autor, Afiliación, lugar. e-mail: autor\@mail.com. 
+Dirección: XXXX. Teléfono: XXXX.
+
+\newpage
+
+## Resumen  
+
+**Objetivo**: [...]. **Material y métodos**: [...]. **Resultados**: [...]. **Conclusión**: [...].
+
+**Palabras clave**: [...].
+
+\newpage
+
+## Abstract 
+
+**Objective**: [...]. **Material and methods**: [...]. **Results**: [...]. **Conclusion**: [...].
+
+**Keywords**: [...].
+
+\newpage
+
+# Introducción
+
+<!---- Antecedentes históricos ---->
+[...].
+
+<!---- Conceptualización del problema ---->
+[...].
+
+<!---- Hipótesis y objetivos ---->
+[...].
+
+# Material y métodos
+
+## Participantes
+
+[...]. 
+
+## Instrumentos
+
+### Instrumento 1 
+
+[...].
+
+### Instrumento 2
+
+[...].
+
+### Instrumento 3 
+
+[...].
+
+### Instrumento 4 
+
+[...].
+
+
+## Procedimiento 
+
+[...].
+
+[...].  
+
+## Análisis estadístico
+
+[...].
+
+[...], using the *R* programming language for statistical computing, [@rlanguage].
+
+# Resultados
+
+[...].
+
+[...]. 
+
+# Discusión
+
+[...].
+
+[...].
+
+[...].
+
+# Conclusión
+
+[...]. 
+
+# Agradecimientos
+
+[...].
+
+# Conflictos de interés
+
+[...].
+
+# Referencias
+
+<div id="refs"></div>
