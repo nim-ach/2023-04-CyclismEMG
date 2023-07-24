@@ -7,11 +7,9 @@ output:
     reference_docx: "ref.docx"
 ---
 
-**Título**: [título]
+**Title**: Enhancing Cycling Performance: Unveiling the Interplay of Jump Force and Neuromuscular Efficiency on Isokinetic Torque in Elite Cyclists.
 
-**Title**: [title]
-
-**Autores**: Primer autor,^1^ Segundo autor,^2^ Tercer autor,^3^ Cuarto autor,^4^ Quinto autor,^5^ Sexto autor.^6^ \*
+**Authors**: Primer autor,^1^ Segundo autor,^2^ Tercer autor,^3^ Cuarto autor,^4^ Quinto autor,^5^ Sexto autor.^6^ \*
 
 ::: {custom-style="Afiliation"}
 ^1^ Afiliación, lugar.
@@ -27,18 +25,10 @@ output:
 ^6^ Afiliación, lugar.
 :::
 
-### \*Autor de correspondencia 
+### \*Correspondence author: 
 
 Autor, Afiliación, lugar. e-mail: autor\@mail.com. 
 Dirección: XXXX. Teléfono: XXXX.
-
-\newpage
-
-## Resumen  
-
-**Objetivo**: [...]. **Material y métodos**: [...]. **Resultados**: [...]. **Conclusión**: [...].
-
-**Palabras clave**: [...].
 
 \newpage
 
@@ -50,7 +40,7 @@ Dirección: XXXX. Teléfono: XXXX.
 
 \newpage
 
-# Introducción
+# Introduction
 
 <!---- Antecedentes históricos ---->
 [...].
@@ -61,50 +51,99 @@ Dirección: XXXX. Teléfono: XXXX.
 <!---- Hipótesis y objetivos ---->
 [...].
 
-# Material y métodos
+# Material y methods
 
-## Participantes
+## Participants
 
 [...]. 
 
-## Instrumentos
+## Instruments
 
-### Instrumento 1 
-
-[...].
-
-### Instrumento 2
+### Instrument 1 
 
 [...].
 
-### Instrumento 3 
+### Instrument 2
 
 [...].
 
-### Instrumento 4 
+### Instrument 3 
+
+[...].
+
+### Instrument 4 
 
 [...].
 
 
-## Procedimiento 
+## Procedure
 
 [...].
 
 [...].  
 
-## Análisis estadístico
+## Statistical Analyses
 
-[...].
+We employed a Bayesian framework to investigate the complex interactions among key performance factors in 11 high-performance cyclists. Bayesian models are favored over traditional frequentist methods for their ability to comprehensively quantify uncertainty and estimate model parameters. The inclusion of prior knowledge about model parameters enables the incorporation of existing information and past research, enhancing robustness, especially when dealing with limited data or complex models.
 
-[...], using the *R* programming language for statistical computing, [@rlanguage].
+Through Bayesian generalized linear models, implemented in R (version 4.2.2), we analyzed the relationships between mean and the standard deviation of torque, for each the quadriceps and hamstrings in separate models, incorporating to this end two predictors: peak strength for each of the jumps tested and mean electromyographic (EMG) activity during functional threshold power (FTP) test. The Bayesian framework provides posterior distributions, allowing for a probabilistic interpretation of parameter estimates with credible intervals that reflect parameter uncertainty.
 
-# Resultados
+In the first group of models, we sought to disentangle the interplay between mean torque and the standard deviation of torque as response variables, with peak strength derived from jump tests, serving as the predictor variable. The model can be expressed as follows:
+
+$$
+\begin{flalign}
+\text{Torque}_{i} \sim \text{Normal}(\mu_{\text{Torque}_{i}}, \sigma_{\text{Torque}_{i}}) \\ \text{Torque}_{i} = \beta_{0} + \beta_{\text{Jump}} \times \text{Jump}_{i}
+\end{flalign}
+$$
+
+where $\mu_{\text{Torque}_{i}}$ and $\sigma_{\text{Torque}_{i}}$ represented the mean and standard deviation of the torque for each participant $i$. The intercept term, $\beta_{0}$, captured the inherent baseline, while $\beta_{\text{Jump}}$ represented the regression coefficient for the predictor variable $\text{Jump}_{i}$, which denotes the peak strength obtained from each of the jump tests.
+
+In the second group of models, we embarked on exploring the relationship of the previously described response variable, with mean EMG activity during FTP testing serving as the predictor variable. The model can be expressed as follows:
+
+$$
+\begin{flalign}
+\text{Torque}_{i} \sim \text{Normal}(\mu_{\text{Torque}_{i}}, \sigma_{\text{Torque}_{i}}) \\
+\text{Torque}_{i} = \beta_{0} + \beta_{\text{EMG}} \times \text{EMG}_{i}
+\end{flalign}
+$$
+
+where $\beta_{\text{EMG}}$ represented the regression coefficient for the predictor variable $\text{EMG}_{i}$, which denotes the mean EMG activity during FTP.
+
+For the model coefficients, we defined weakly informative priors centered at 0 as a regularization strategy during the Bayesian estimation process, shrinking potential noise-associated effects deriving from outliers or random sampling error that could arise from the observations. The intercept term's prior distribution, $\beta_{0}$, was specified as follows:
+
+
+$$
+\begin{flalign}
+\mu = \text{Med}(\text{Torque}) \\ 
+\sigma = \begin{cases} MAD(\text{Torque}), & \text{if } MAD(\text{Torque}) > 2.5 \\ 
+          2.5, & \text{if } MAD(\text{Torque}) \leq 2.5 \end{cases} \\ 
+\beta_{0} \sim \text{Student-t}(3, \mu, \sigma)
+\end{flalign}
+$$
+
+where $\beta_{0}$, specified as a t-distribution with location $\mu$ and scale $\sigma$ served as the prior distribution for the intercept, where $\mu$ represented the median of the response variable $Torque$, and $\sigma$ represented the median absolute deviation (MAD) of the response variable Torque, adjusted to 2.5 if the MAD was less than or equal to 2.5.
+
+Meanwhile, the prior distributions for $\beta_{\text{jump}}$ and $\beta_{\text{EMG}}$ were both specified as:
+
+$$
+\begin{flalign}
+\beta_{\text{Jump}}, \beta_{\text{EMG}} \sim \text{Student-t}(3, 0, 5)
+\end{flalign}
+$$
+
+meaning that the prior distribution for model coeficients were specified as a t-distribution with 3 degrees of freedom, centered at 0, and a scale parameter of 5, as previously stated.
+
+The Bayesian generalized linear models were fitted utilizing the `brm()` function from the *brms* package, employing 5 chains with 12000 iterations per chain. The initial 2000 iterations were designated as warmup to ascertain convergence, while the remaining iterations facilitated posterior distribution estimation of model coefficients (i.e., 50000 effective iterations in total), thus offering credible intervals to substantiate parameter uncertainty.
+
+Posterior distributions were meticulously examined. Statistically significant coefficients, signifying substantively meaningful relationships, were determined by 95% credible intervals that excluded zero.
+
+# Results
 
 [...].
 
 [...]. 
 
-# Discusión
+# Discussion
 
 [...].
 
@@ -112,18 +151,18 @@ Dirección: XXXX. Teléfono: XXXX.
 
 [...].
 
-# Conclusión
+# Conclusion
 
 [...]. 
 
-# Agradecimientos
+# Acknowledgements
 
 [...].
 
-# Conflictos de interés
+# Conflict of interest
 
 [...].
 
-# Referencias
+# References
 
 <div id="refs"></div>
