@@ -6,7 +6,7 @@ iso <- as.data.table(
     path = "data-raw/data-raw.xlsx",
     sheet = "ISOCINETICA",
     range = "A4:AU14",
-    col_names = readLines("data-raw/aux/iso_titles")
+    col_names = readLines("data-raw/misc/iso_titles.txt")
   )
 )
 
@@ -15,7 +15,7 @@ salto <- as.data.table(
     path = "data-raw/data-raw.xlsx",
     sheet = "SALTO",
     range = "A4:X14",
-    col_names = readLines("data-raw/aux/jump_titles")
+    col_names = readLines("data-raw/misc/jump_titles.txt")
   )
 )
 
@@ -24,7 +24,7 @@ emg <- as.data.table(
     path = "data-raw/data-raw.xlsx",
     sheet = "EMG",
     range = "A4:J14",
-    col_names = readLines("data-raw/aux/emg_titles")
+    col_names = readLines("data-raw/misc/emg_titles.txt")
   )
 )
 
@@ -37,4 +37,13 @@ if (all(identical(iso$sujetos, salto$sujetos),
   rm(emg, iso, salto)
 } else stop("Los nombres no coinciden entre almenos un conjunto de datos.\n¡Comprobarlo!")
 
+
+cyclist[j = `:=`(
+          mean_torque_quad = median(x = c(iso_mean_torque_quad_der_raw, iso_mean_torque_quad_izq_raw)),
+          sd_torque_quad = median(x = c(iso_sd_torque_quad_der_raw, iso_sd_torque_quad_izq_raw)),
+          mean_torque_isquio = mean(x = c(iso_mean_torque_isquio_der_raw, iso_mean_torque_isquio_izq_raw)),
+          sd_torque_isquio = mean(x = c(iso_sd_torque_isquio_der_raw, iso_sd_torque_isquio_izq_raw))),
+        by = sujetos][]
+
 save(cyclist, file = "data/cyclist.RData")
+save(cyclist, file = "docs/manuscript/misc/cyclist.RData")

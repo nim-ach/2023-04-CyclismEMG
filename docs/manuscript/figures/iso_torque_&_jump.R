@@ -49,11 +49,11 @@ scatter_plot = function(model, muscle = NULL) {
   } else stop("`muscle` must be one of \"quad\" or \"isquio\"")
 
   if (grepl("abkv", names(model$data[3L]), TRUE)) {
-    xlab = "Abalakov peak force [N]"
+    xlab = "Abalakov peak force [Z score]"
   } else if (grepl("cmj", names(model$data[3L]), TRUE)) {
-    xlab = "CMJ peak force [N]"
+    xlab = "CMJ peak force [Z score]"
   } else if (grepl("sj", names(model$data[3L]), TRUE)) {
-    xlab = "SJ peak force [N]"
+    xlab = "SJ peak force [Z score]"
   }
 
   pred_data <- data.frame(
@@ -126,7 +126,7 @@ trace_plot = function(model, muscle = NULL) {
   ggplot(post_dist, aes(.iteration, .data[[y_var]], col = as.factor(.chain))) +
     geom_line() +
     labs(x = "Iterations (thousands)",
-         y = paste("Estimated linear effect of",ylab_jump,"\npeak force on", ylab, "torque"),
+         y = paste("Estimated linear effect of one\n",ylab_jump,"SD on", ylab, "torque"),
          col = "Chain") +
     geom_ysidehistogram(aes(fill = as.factor(.chain)), bins = 100,
                         show.legend = FALSE) +
@@ -181,7 +181,7 @@ convergence_plots = function(model, muscle) {
   ggplot(post_dist, aes(iter, cumulative)) +
     geom_line(aes(col = chain)) +
     labs(x = "Iterations (log scale)",
-         y = paste("Estimated linear effect of",ylab_jump,"\npeak force on", ylab, "torque"),
+         y = paste("Estimated linear effect of one\n",ylab_jump,"SD on", ylab, "torque"),
          col = "Chain") +
     scale_color_brewer() +
     scale_x_continuous(trans = "log10",
@@ -200,9 +200,9 @@ q3_abkv <- convergence_plots(abkv_quad_mod, "quad")
 
 plots <- (
   guide_area() / (
-    (((p1_sj + p3_sj) / p2_sj) | ((q1_sj + q3_sj) / q2_sj)) /
-    (((p1_cmj + p3_cmj) / p2_cmj) | ((q1_cmj + q3_cmj) / q2_cmj)) /
-    (((p1_abkv + p3_abkv) / p2_abkv) | ((q1_abkv + q3_abkv) / q2_abkv))
+    (((q1_sj + p3_sj) / p2_sj) | ((p1_sj + q3_sj) / q2_sj)) /
+    (((q1_cmj + p3_cmj) / p2_cmj) | ((p1_cmj + q3_cmj) / q2_cmj)) /
+    (((q1_abkv + p3_abkv) / p2_abkv) | ((p1_abkv + q3_abkv) / q2_abkv))
   )
 )
 
@@ -216,5 +216,5 @@ plots <- plots +
         axis.text = element_text(size = 8),
         plot.tag = element_text(size = 10))
 
-ggsave("manuscript/figures/iso_torque_&_jump.pdf", plots, "pdf", width = 12, height = 15, units = "in")
-ggsave("manuscript/figures/iso_torque_&_jump.jpeg", plots, "jpeg", width = 12, height = 15, units = "in", dpi = 400)
+ggsave("docs/manuscript/figures/iso_torque_&_jump.pdf", plots, "pdf", width = 12, height = 15, units = "in")
+ggsave("docs/manuscript/figures/iso_torque_&_jump.jpeg", plots, "jpeg", width = 12, height = 15, units = "in", dpi = 400)

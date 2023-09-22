@@ -32,30 +32,16 @@ quad_mod <- readRDS("R/bda/bm/quad_iso_torque_&_emg.RDS")
 
 ## Datos usados para ajustar los modelos ----
 
-quad_data <- ## Cuádriceps
-  cyclist[i = !is.na(iso_mean_torque_quad_der_raw),
-          j = list(
-            mean_torque_quad = mean(x = c(iso_mean_torque_quad_der_raw, iso_mean_torque_quad_izq_raw)),
-            sd_torque_quad = mean(x = c(iso_sd_torque_quad_der_raw, iso_sd_torque_quad_izq_raw)),
-            emg_mean_1
-          ),
-          by = sujetos]
+quad_data <- quad_mod$data
 
-isqt_data <- ## Isquiotibiales
-  cyclist[i = !is.na(iso_mean_torque_isquio_der_raw),
-          j = list(
-            mean_torque_isquio = mean(x = c(iso_mean_torque_isquio_der_raw, iso_mean_torque_isquio_izq_raw)),
-            sd_torque_isquio = mean(x = c(iso_sd_torque_isquio_der_raw, iso_sd_torque_isquio_izq_raw)),
-            emg_mean_1
-          ),
-          by = sujetos]
+isqt_data <- isqt_mod$data
 
 ## Datos y predicciones generados de los predictores a intervalos regulares ----
 
 ## Cuádriceps
 quad_pred <- data.frame(
-  emg_mean_1 = seq(from = min(cyclist$emg_mean_1),
-                   to = max(cyclist$emg_mean_1),
+  emg_mean_1 = seq(from = min(quad_data$emg_mean_1),
+                   to = max(quad_data$emg_mean_1),
                    length.out = 10),
   sd_torque_quad = median(quad_data$sd_torque_quad))
 
@@ -70,8 +56,8 @@ quad_pred <- predict(
 
 ## Isquiotibiales
 isqt_pred <- data.frame(
-  emg_mean_1 = seq(from = min(cyclist$emg_mean_1),
-                   to = max(cyclist$emg_mean_1),
+  emg_mean_1 = seq(from = min(isqt_data$emg_mean_1),
+                   to = max(isqt_data$emg_mean_1),
                    length.out = 10),
   sd_torque_isquio = median(isqt_data$sd_torque_isquio))
 
@@ -112,7 +98,7 @@ scatter_plot = function(pred_data, raw_data, muscle = NULL) {
     scale_x_continuous(#limits = c(0, NA),
                        labels = function(x) scales::percent(x/100),
                        n.breaks = 4) +
-    labs(x = "Mean EMG [%]", y = paste("Mean", ylab, "torque [Nm]"), fill = "CI") +
+    labs(x = "Mean EMG [Z score]", y = paste("Mean", ylab, "torque [Nm]"), fill = "CI") +
     see::theme_modern()
 }
 
@@ -135,7 +121,7 @@ trace_plot = function(model, muscle = NULL) {
   ggplot(post_dist, aes(.iteration, b_emg_mean_1, col = as.factor(.chain))) +
     geom_line() +
     labs(x = "Iterations (thousands)",
-         y = paste("Estimated linear effect of\nEMG on", ylab, "torque"),
+         y = paste("Estimated linear effect of one\nEMG SD on", ylab, "torque"),
          col = "Chain") +
     geom_ysidehistogram(aes(fill = as.factor(.chain)), bins = 100,
                         show.legend = FALSE) +
@@ -176,7 +162,7 @@ convergence_plots = function(model, muscle) {
 
   ggplot(post_dist, aes(iter, emg_mean)) +
     geom_line(aes(col = chain)) +
-    labs(x = "Iterations (log scale)", y = paste("Estimated linear effect of\nEMG on", ylab, "torque"),
+    labs(x = "Iterations (log scale)", y = paste("Estimated linear effect of one\nEMG SD on", ylab, "torque"),
          col = "Chain") +
     scale_color_brewer() +
     scale_x_continuous(trans = "log10",
@@ -201,5 +187,5 @@ plots <- plots +
         axis.text = element_text(size = 8),
         plot.tag = element_text(size = 10))
 
-ggsave("manuscript/figures/iso_torque_&_emg.pdf", plots, "pdf", width = 12, height = 5, units = "in")
-ggsave("manuscript/figures/iso_torque_&_emg.jpeg", plots, "jpeg", width = 12, height = 5, units = "in", dpi = 400)
+ggsave("docs/manuscript/figures/iso_torque_&_emg.pdf", plots, "pdf", width = 12, height = 5, units = "in")
+ggsave("docs/manuscript/figures/iso_torque_&_emg.jpeg", plots, "jpeg", width = 12, height = 5, units = "in", dpi = 400)

@@ -38,13 +38,29 @@ plot_data <- droplevels(plot_data[complete.cases(mean, sd)])
 plot_data[, ci := sd * qnorm(.975)]
 
 m <- brms::brm(
-  mean | se(sd) ~ 1 + side + variable + (1|sujetos),
+  bf(mean | se(sd, sigma = TRUE) ~ 1 + side + variable + (1|sujetos)),
   data = plot_data,
+  family = gaussian(),
+  prior = prior(student_t(3, 0, 5), class = b),
   backend = "cmdstanr",
   control = list(adapt_delta = .99,
                  max_treedepth = 100),
-  seed = 1234
+  iter = 12000, chains = 5, warmup = 2000,
+  seed = 12345, cores = 5
 )
+
+saveRDS(m, file = "R/bda/bm/iso_torque_&_others.RDS")
+
+# lme4::lmer(formula = mean ~ side + variable + (1|sujetos), data = plot_data, REML = T) |>
+#   equatiomatic::extract_eq(intercept = T,
+#                            mean_separate = T,
+#                            index_factors = T,
+#                            swap_var_names = c(variable = "Muscle",
+#                                               side = "Leg",
+#                                               sujetos = "Subject",
+#                                               mean = "Torque"),
+#                            return_variances = TRUE)
+
 
 plot_data <- predict(object = m) |>
   cbind(plot_data)
@@ -72,7 +88,5 @@ p1 <- ggplot(plot_data, aes(Estimate, reorder(sujetos, mean))) +
         axis.text = element_text(size = 8),
         plot.tag = element_text(size = 10))
 
-ggsave("manuscript/figures/iso_torque_&_idem.pdf", p1, "pdf", width = 5, height = 5, units = "in")
-ggsave("manuscript/figures/iso_torque_&_idem.jpeg", p1, "jpeg", width = 5, height = 5, units = "in", dpi = 400)
-
-bayestestR::describe_posterior(m)
+ggsave("docs/manuscript/figures/iso_torque_&_idem.pdf", p1, "pdf", width = 5, height = 5, units = "in")
+ggsave("docs/manuscript/figures/iso_torque_&_idem.jpeg", p1, "jpeg", width = 5, height = 5, units = "in", dpi = 400)

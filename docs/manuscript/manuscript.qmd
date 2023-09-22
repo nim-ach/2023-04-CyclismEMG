@@ -1,0 +1,360 @@
+---
+title: ""
+bibliography: "misc/ref.bib"
+format: 
+  docx:
+    reference-doc: "ref.docx"
+editor_options: 
+  chunk_output_type: inline
+---
+
+**Title**: Enhancing Cycling Performance: Unveiling the Interplay of Jump Force and Neuromuscular Efficiency on Isokinetic Torque in Elite Cyclists.
+
+**Authors**: Diego Mabe Castro^1,2^, Matías Castillo-Aguilar^1,2^, Cristian Núñez-Espinosa^2,3^\*.
+
+::: {custom-style="Afiliation"}
+^1^ Kinesiology Department, University of Magallanes, Punta Arenas, Chile.
+
+^2^ Centro Asistencial de Docencia e Investigación (CADI-UMAG), University of Magallanes, Punta Arenas, Chile
+
+^3^ School of Medicine, University of Magallanes, Punta Arenas, Chile.
+:::
+
+### \*Correspondence: 
+
+Cristian Núñez-Espinosa, School of Medicine, University of Magallanes, Punta Arenas, Chile. Centro Asistencial de Docencia e Investigación CADI-UMAG, Chile. e-mail: [cristian.nunez\@umag.cl](mailto:cristian.nunez@umag.cl). Address: Avenida Bulnes 01855, Box 113-D. Phone: +56 61 2201411.
+
+\newpage
+
+## Abstract 
+
+**Objective**: [...]. **Material and methods**: [...]. **Results**: [...]. **Conclusion**: [...].
+
+**Keywords**: [...].
+
+\newpage
+
+# Introduction
+
+<!---- Antecedentes históricos ---->
+[...].
+
+<!---- Conceptualización del problema ---->
+[...].
+
+<!---- Hipótesis y objetivos ---->
+[...].
+
+# Material y methods
+
+## Participants
+
+[...]. 
+
+## Instruments
+
+### Instrument 1 
+
+[...].
+
+### Instrument 2
+
+[...].
+
+### Instrument 3 
+
+[...].
+
+### Instrument 4 
+
+[...].
+
+
+## Procedure
+
+[...].
+
+[...].  
+
+## Statistical Analyses
+
+### Framework
+
+We employed a Bayesian framework to investigate the complex interactions among key performance factors in 11 high-performance cyclists. Bayesian models are favored over traditional frequentist methods for their ability to comprehensively quantify uncertainty and estimate model parameters. The inclusion of prior knowledge about model parameters enables the incorporation of existing information and past research, enhancing robustness, especially when dealing with limited data or complex models.
+
+Through Bayesian generalized linear models, we analyzed the relationships between mean and the standard deviation (SD) of torque, for each the quadriceps and hamstrings in separate models, incorporating to this end two predictors: peak strength for each of the jumps tested and mean electromyographic (EMG) activity during functional threshold power (FTP) test. The Bayesian framework provides posterior distributions, allowing for a probabilistic interpretation of parameter estimates with credible intervals that reflect parameter uncertainty.
+
+### Model-based approach
+
+In the first group of models, we sought to disentangle the interplay between mean torque and the SD of torque, using them as response variables, with peak strength derived from jump tests serving as the predictor variables. The model can be expressed as follows:
+
+$$
+\begin{aligned}
+\text{Torque}_{i} &\sim \text{Normal}(\mu_i, \sigma_i) \\
+\mu_i &= \alpha + \beta_{\text{Jump}} \cdot \text{Jump}_{i}
+\end{aligned}
+$$ {#eq-first-model}
+
+where $\mu_i$ and $\sigma_i$ represented the mean and SD of the torque for each participant $i$. The intercept, $\alpha$, captured the inherent baseline, while $\beta_{\text{Jump}}$ represented the fixed effect for $\text{Jump}_{i}$, which denotes the peak strength for each $i$.
+
+In the second group of models, we embarked on exploring the relationship of the previously described response variable, with mean EMG activity during FTP testing serving as the predictor variable. The model can be expressed as follows:
+
+$$
+\begin{align}
+\text{Torque}_{i} &\sim \text{Normal}(\mu_i, \sigma_i) \\
+\mu_i &= \alpha + \beta_{\text{EMG}} \cdot \text{EMG}_{i}
+\end{align}
+$$ {#eq-second-model}
+
+where $\text{Torque}_{i}$, the response term, remains unchanged to the previous model. $\beta_{\text{EMG}}$ represented the regression coefficient for the predictor variable $\text{EMG}_{i}$, which denotes the mean EMG activity during FTP.
+
+It is worth noting that we recorded isokinetic data for each leg of each participant for both the quadriceps and hamstrings, but for the previous mentioned models (@eq-first-model and [-@eq-second-model]), we treated the response as the averaged mean and SD torque across legs. For the third and final model, we transformed the data to treat the side of measurement as an independent variable next to the muscle assessed, allowing the intercept to vary freely across individuals as follow:
+
+
+$$
+\begin{align}
+\text{Torque}_{i} &\sim \text{Normal} (\mu_i, \sigma_i)\\
+\mu_i &= (\alpha + u_{j[i]}) + \beta_{\text{Leg}} \cdot \text{Leg}_{i} + \beta_{\text{Muscle}} \cdot \text{Muscle}_{i} \\
+u_j &\sim \text{Normal} (0, \tau^2)
+\end{align}
+$$ {#eq-third-model}
+
+$\text{Torque}_{i}$ is the mean outcome for observation $i$. $\sigma_i$ is the error measurement for observation $i$. $\mu_i$ is the predicted mean outcome for observation $i$. $\alpha$ is the intercept and $u_j$ is the random intercept for subject $j$, which captures the variation in $\text{Torque}_{i}$ due to subject-specific factors, and $j[i]$ is the subject index for observation $i$, which indicates which subject corresponds to observation $i$. $\tau$ is the standard deviation of the random intercepts, which measures the amount of heterogeneity among subjects.
+
+### Prior specification
+
+For the model coefficients, we defined weakly informative priors centered at 0 as a regularization strategy during the Bayesian estimation process, shrinking potential noise-associated effects deriving from outliers or random sampling error that could arise from the observations. The intercept term's prior distribution, $\alpha$, was specified as follows:
+
+$$
+\begin{align}
+\mu &= \text{Med}(\text{Torque}) \\ 
+\sigma &= \begin{cases} MAD(\text{Torque}), & \text{if } MAD(\text{Torque}) > 2.5 \\ 
+          2.5, & \text{if } MAD(\text{Torque}) \leq 2.5 \end{cases} \\ 
+\alpha &\sim \text{Student-t}(3, \mu, \sigma)
+\end{align}
+$$ {#eq-alpha-prior}
+
+where $\alpha$, specified as a t-distribution with location $\mu$ and scale $\sigma$ served as the prior distribution for the intercept, where $\mu$ represented the median of the response variable $Torque$, and $\sigma$ represented the median absolute deviation (MAD) of the response variable Torque, adjusted to 2.5 if the MAD was less than or equal to 2.5.
+
+Meanwhile, the prior distributions for $\beta_{\text{jump}}$ and $\beta_{\text{EMG}}$ were both specified as follow:
+
+$$
+\begin{align}
+\beta_{\text{Jump}}, \beta_{\text{EMG}} \sim \text{Normal}(0, 5)
+\end{align}
+$$ {#eq-b-prior}
+
+### Model-fitting
+
+The Bayesian generalized linear models were fitted utilizing the `brm()` function from the *brms* package [@brms], employing 5 chains with 12000 iterations per chain. The initial 2000 iterations were designated as warmup to ascertain convergence, while the remaining iterations facilitated posterior distribution estimation of model coefficients (i.e., 50000 effective iterations in total), thus offering credible intervals to substantiate parameter uncertainty.
+
+Following the **S**equential **E**ffect e**X**istence and s**I**gnificance **T**esting (SEXIT) framework to describe the effects from Bayesian models [@makowski2019indices], the median and the CI~95%~ (using the highest density interval) were reported as a measure of centrality and uncertainty, the probability of direction (p~direction~) as measure of existence, the proportion of the posterior probability distribution that falls outside the region of practical equivalence (ROPE) as a measure of practical significance (p~signif~), estimated as one tenth (1/10 = 0.1) of the SD of the response variable, and Bayes factor (BF~10~) using Savage-Dickey density ratio against the point null indicating if the null value has become less or more likely given the observed data [@heck2019caveat], using this as a measure of absolute magnitude of evidence in favor or against the null hypothesis (of no effect).
+Considering that ROPE, and therefore p~signif~, are sensitive to the predictor-level scale, continuous independent variables were standardized, which is only relevant for models described in @eq-first-model and [-@eq-second-model].
+
+For BF interpretation we’ve considered: BF = 1, no evidence; 1 < BF <= 3, anecdotal; 3 < BF <= 10, moderate; 10 < BF <= 30, strong; 30 < BF <= 100, very strong; and BF > 100, as extreme evidence [@jeffreys1998theory]. For the proportion of the posterior in the ROPE we considered: < 1%, significant; < 2.5%, probably significant; ≤ 97.5% & ≥ 2.5%, undecided significance; > 97.5%, probably neglible; > 99%, neglible [@makowski2019indices]. The convergence and stability of Bayesian sampling has been assessed using R-hat, which should be below 1.01 [@vehtari2019rank], and the Effective Sample Size (ESS), which should be greater than 1000 [@brms]. All the statistical analyses were computed and implemented in the R programming language [@rlanguage].
+
+# Results
+
+```{r paquetes, include=FALSE}
+if (!"pacman" %in% .packages(TRUE)) {
+  warning("Package \"pacman\" is not installed.\nInstallation will be attempted...")
+  install.packages("pacman")
+}
+
+pacman::p_load(data.table,
+               brms,
+               ggplot2,
+               bayestestR,
+               gtsummary)
+```
+
+```{r datos, include=FALSE}
+load("misc/cyclist.RData")
+```
+
+```{r funciones, include=FALSE}
+report_model = function(x, se = NULL, seed = 1234) {
+p_summary = function(i, se) {
+  if (is.null(se)) {
+    se = sd(i)
+  } else {
+    if (length(se) > 1) {
+      se = mean(se, na.rm = TRUE)
+    }
+  }
+  ci = bayestestR::hdi(i)
+  out = list(Median = median(i),
+             SD = sd(i),
+             CI = ci$CI,
+             CI_Lower = ci$CI_low,
+             CI_Upper = ci$CI_high,
+             ROPE = rope(i, range = se * c(-1,1))$ROPE_Percentage,
+             P_Existence = as.numeric(pd(i)),
+             P_Significant = as.numeric(p_significance(i, se)))
+  lapply(out, round, 2)
+}
+
+set.seed(seed)
+
+b = data.table::as.data.table(x = bayestestR::bayesfactor(x))
+
+b$BF = round(exp(b$log_BF), 2)
+b$Interpretation = effectsize::interpret_bf(b$BF)
+b = b[,c("Parameter", "BF", "Interpretation")]
+v = b$Parameter
+p = data.table::as.data.table(x)
+p = p[, .SD, .SDcols = c(v, "sigma")]
+p = rbindlist(l = lapply(p, p_summary, se = p$sigma),
+              idcol = "Parameter")
+merge(p, b, by = "Parameter")
+}
+
+report_text = function(x) {
+  out = list()
+  out$param = x$Parameter
+  out$mean_sd = paste0("$\\beta$ = ", x$Median, ", SE = ", x$SD)
+  out$ci = paste0("CI~",x$CI*100,"%~[", x$CI_Lower, ", ", x$CI_Upper, "]")
+  out$sexit = paste0("ROPE = ", x$ROPE * 100, "%, p~direction~ = ", x$P_Existence * 100, "%, p~signif~ = ", x$P_Significant * 100, "%")
+  out$bf = paste0("BF~10~ = ", x$BF, " (", gsub(" evidence.*", "", x$Interpretation),")")
+  out = data.table::as.data.table(out)
+  data.table::setkeyv(out, "param")
+  out
+}
+```
+
+```{r modelos, include=FALSE}
+file <- list.files("../../R/bda/bm", full.names = TRUE)
+names(file) <- gsub("\\.|/|R/bda/bm/|RDS$|&_", "", file)
+m <- lapply(file, readRDS)
+```
+
+Isokinetic torque, EMG activity and jump characteristics can be seen in [table 1]{#tbl-1}.
+
+## Jumping performance on mean torque
+
+When analyzing the relationship of jump performance on the mean torque for either muscle group, we've separated them across each jump type. These are described in the following sections for each jump type and can be seen in [figure 1](#fig-1).
+
+![](figures/iso_torque_&_jump.pdf){#fig-1 width=100%}
+
+*Figure 1*. Linear effect, convergence and trace plots for SJ (I to VI), CMJ (VII to XII) and Abalakov (XIII to XVIII) for both quadriceps and hamstrings (left and right halfs, respectively).
+
+### Squat Jump
+
+```{r sj}
+#| echo: false
+#| include: false
+#| cache: true
+sj = m[names(m) %like% "sj"]
+sj_report = lapply(sj, report_model)
+
+isq = report_text(sj_report$isquios_iso_torque_sj_fuerza)[2L]
+quad = report_text(sj_report$quad_iso_torque_sj_fuerza)[2L]
+```
+
+The observed effect of SJ on muscle torque was relevant only in the hamstrings (`r isq[, paste(mean_sd, ci, sep = ", ")]`), but not in the quadriceps (`r quad[, paste(mean_sd, ci, sep = ", ")]`). Our data provides strong evidence in favor of the hypothesis that the SJ performance exerts an additive effect on hamstrings torque (`r isq[, bf]`), but not for quadriceps torque (`r quad[, bf]`). The probability associated with the existence of an effect was uncertain, with not practical significance in the scale of the response variable for quadriceps torque (`r quad[, sexit]`). But for hamstrings mean torque, there was more certainty into the existence of an effect with larger confidence into the practical significance associated with the effect of SJ for hamstrings torque (`r isq[, sexit]`).
+
+### Counter Movement Jump
+
+```{r cmj}
+#| echo: false
+#| include: false
+#| cache: true
+cmj = m[names(m) %like% "cmj"]
+cmj_report = lapply(cmj, report_model)
+
+isq = report_text(cmj_report$isquios_iso_torque_cmj_fuerza)[2L]
+quad = report_text(cmj_report$quad_iso_torque_cmj_fuerza)[2L]
+```
+
+Similar findings were observed when assessing CMJ peak force on muscle torque: less pronounced effect on quadriceps' torque (`r quad[, paste(mean_sd, ci, sep = ", ")]`), than the hamstrings (`r isq[, paste(mean_sd, ci, sep = ", ")]`). In this line, the evidence in favor of the hypothesis that suggests an additive effect on muscle torque was strong for the hamstrings (`r isq[, bf]`) but not for the quadriceps (`r quad[, bf]`). The full posterior distribution indicates that CMJ peak force exerts a positive and probable meaningful effect on hamstrings mean torque (`r isq[, sexit]`), which cannot be said about the effect exerted on quadriceps mean torque, `r quad[, sexit]`.
+
+### Abalakov Jump
+
+```{r abalakov}
+#| echo: false
+#| include: false
+#| cache: true
+abk = m[names(m) %like% "abkv"]
+abk_report = lapply(abk, report_model)
+
+isq = report_text(abk_report$isquios_iso_torque_abkv_fuerza)[2L]
+quad = report_text(abk_report$quad_iso_torque_abkv_fuerza)[2L]
+```
+
+Likewise, one SD increase in the peak force recorded from the abalakov jump was associated with a 3.14 and a 17.42 Nm increase in quadriceps (`r quad[, paste(mean_sd, ci, sep = ", ")]`) and hamstrings torque (`r isq[, paste(mean_sd, ci, sep = ", ")]`), respectively. The hypothesis that suggest an effect between abalakov peak force and hamstrings mean torque in the abalakov was about 93 times more likely in the presence of our data (`r isq[, paste(bf, sexit, sep = ", ")]`), but only about 1.2 times more likely to support the link between abalakov peak force and quadriceps torque (`r quad[, paste(bf, sexit, sep = ", ")]`).
+
+## EMG
+
+```{r emg}
+#| echo: false
+#| include: false
+#| cache: true
+emg = m[names(m) %like% "emg"]
+emg_report = lapply(emg, report_model)
+
+isq = report_text(emg_report$isquios_iso_torque_emg)[2L]
+quad = report_text(emg_report$quad_iso_torque_emg)[2L]
+```
+
+When assessing the effect of EMG during FTP assessment we've found that those individual with lower muscle activity recordings were found to have greater isokinetic torque measurements, showing an inverse relationship between EMG during FTP and mean torque for both the hamstrings, `r isq[, paste(mean_sd, ci, sep = ", ")]`, and the quadriceps, `r quad[, paste(mean_sd, ci, sep = ", ")]`. The strenght of the evidence associated with the hypothesis suggesting the presence of an effect was greater for the hamstrings (`r isq[, paste(bf, sexit, sep = ", ")]`), than for the quadriceps (`r quad[, paste(bf, sexit, sep = ", ")]`). The estimated predictions based from this model can be seen in [figure 2](#fig-2).
+
+![](figures/iso_torque_&_emg.pdf){#fig-2 width=100%}
+
+*Figure 2*. Linear effect, convergence and trace plots for EMG measured on FTP assessment for both quadriceps and hamstrings.
+
+## Biomechanical profile
+
+When assessing within-subjects characteristics and how their biomechanical profiles differ between them, we found that both selective muscle utilization and leg dominance were associated with different mean torque attained during isokinetic evaluation which can be seen in [figure 3](#fig-3).
+
+![](figures/iso_torque_&_idem.pdf){#fig-3 width=100%}
+
+*Figure 3*. Within-subjects mixed effects model of mean torque assessing the differences associated with muscle and leg evaluated with a random intercept for each subject. Additionally, it can be also seen the regularization effect associated with prior selection on predicted values against the observed data.
+
+
+### Muscle dependent torque
+
+```{r isq-vs-quad}
+#| echo: false
+#| include: false
+#| cache: true
+iso = m[names(m) %like% "others"]
+iso_report = lapply(iso, report_model)
+
+muscle = report_text(iso_report$iso_torque_others)[3L]
+```
+
+When comparing the mean torque for both the quadriceps and hamstrings, after adjusting for leg dominance and between subjects variation, the quadriceps showed about 87 $\text{Nm}$ more torque than the hamstrings (`r muscle[, paste(mean_sd, ci, sep = ", ")]`), which can be considered with certainty a meaningful difference (`r muscle[, sexit]`). Our data holds consistent with the hypothesis of the existence of a difference between muscle groups, `r muscle[, bf]`.
+
+## Right vs Left leg
+
+```{r right-vs-left}
+#| echo: false
+#| include: false
+#| cache: true
+leg = report_text(iso_report$iso_torque_others)[2L]
+```
+In the case of weather left or right leg was tested when assessing isokinetic torque, any difference observed was marginal and provides at best anecdotal evidence to support the existence of a difference between sides, `r paste(leg[,-1], collapse = ", ")`.
+
+# Discussion
+
+[...].
+
+[...].
+
+[...].
+
+# Conclusion
+
+[...]. 
+
+# Acknowledgements
+
+[...].
+
+# Conflict of interest
+
+[...].
+
+# References
+
+<div id="refs"></div>

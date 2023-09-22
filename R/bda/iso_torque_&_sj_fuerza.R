@@ -6,6 +6,9 @@
 ## Manipulación de datos
 library(data.table)
 
+## Manipulación de datos
+library(datawizard)
+
 ## Modelos bayesianos
 library(brms) ## Paquete principal
 
@@ -18,22 +21,20 @@ data("cyclist")
 
 # Ajustamos los modelos ---------------------------------------------------
 
-quad_data <- cyclist[i = !is.na(iso_mean_torque_quad_der_raw),
-                     j = list(
-                       mean_torque_quad = mean(x = c(iso_mean_torque_quad_der_raw,
-                                                     iso_mean_torque_quad_izq_raw)),
-                       sd_torque_quad = mean(x = c(iso_sd_torque_quad_der_raw,
-                                                   iso_sd_torque_quad_izq_raw)),
-                       jump_sj_fuerza_peak
-                     ),
-                     by = sujetos]
+quad_data <- cyclist[
+  complete.cases(mean_torque_quad, sd_torque_quad),
+  list(
+    mean_torque_quad, sd_torque_quad,
+    jump_sj_fuerza_peak = standardize(jump_sj_fuerza_peak)
+  )
+]
 
 quad_model <- brm(
   ## Especificamos el modelo
-  formula = mean_torque_quad | se(sd_torque_quad) ~ jump_sj_fuerza_peak,
+  formula = mean_torque_quad | se(sd_torque_quad, sigma = TRUE) ~ jump_sj_fuerza_peak,
 
   ## Escogemos la distribución a priori de los coeficientes
-  prior = prior(prior = student_t(3, 0, 5), class = b),
+  prior = prior(prior = normal(0, 5), class = b),
 
   ## Datos a usar
   data = quad_data,
@@ -45,7 +46,7 @@ quad_model <- brm(
   chains = 5L, iter = 12e3, warmup = 2e3,
   cores = 5L, backend = "cmdstanr",
   save_pars = save_pars(all = TRUE),
-  # control = list(max_treedepth = 100, adapt_delta = .99),
+  control = list(max_treedepth = 100, adapt_delta = .99),
   seed = 1234
 )
 
@@ -69,25 +70,23 @@ saveRDS(quad_model, file = "R/bda/bm/quad_iso_torque_&_sj_fuerza.RDS")
 
 # Ajustamos los modelos ---------------------------------------------------
 
-isqt_data <- cyclist[i = !is.na(iso_mean_torque_isquio_der_raw),
-                     j = list(
-                       mean_torque_isquio = mean(x = c(iso_mean_torque_isquio_der_raw,
-                                                       iso_mean_torque_isquio_izq_raw)),
-                       sd_torque_isquio = mean(x = c(iso_sd_torque_isquio_der_raw,
-                                                     iso_sd_torque_isquio_izq_raw)),
-                       jump_sj_fuerza_peak
-                     ),
-                     by = sujetos]
+isqt_data <- cyclist[
+  complete.cases(mean_torque_isquio, sd_torque_isquio),
+  list(
+    mean_torque_isquio, sd_torque_isquio,
+    jump_sj_fuerza_peak = standardize(jump_sj_fuerza_peak)
+  )
+]
 
 ## Vemos los priors por defecto
-get_prior(formula = mean_torque_isquio | se(sd_torque_isquio) ~ jump_sj_fuerza_peak, data = isqt_data)
+get_prior(formula = mean_torque_isquio | se(sd_torque_isquio, sigma = TRUE) ~ jump_sj_fuerza_peak, data = isqt_data)
 
 isqt_model <- brm(
   ## Especificamos el modelo
-  formula = mean_torque_isquio | se(sd_torque_isquio) ~ jump_sj_fuerza_peak,
+  formula = mean_torque_isquio | se(sd_torque_isquio, sigma = TRUE) ~ jump_sj_fuerza_peak,
 
   ## Escogemos la distribución a priori de los coeficientes
-  prior = prior(prior = student_t(3, 0, 5), class = b),
+  prior = prior(prior = normal(0, 5), class = b),
 
   ## Datos a usar
   data = isqt_data,
@@ -99,7 +98,7 @@ isqt_model <- brm(
   chains = 5L, iter = 12e3, warmup = 2e3,
   cores = 5L, backend = "cmdstanr",
   save_pars = save_pars(all = TRUE),
-  # control = list(max_treedepth = 100, adapt_delta = .99),
+  control = list(max_treedepth = 100, adapt_delta = .99),
   seed = 1234
 )
 
