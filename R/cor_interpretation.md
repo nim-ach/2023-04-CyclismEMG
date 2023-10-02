@@ -1,3 +1,7 @@
+---
+output:
+  pdf_document: default
+---
 # Correlaciones
 
 Basado en los hallazgos de las correlaciones observadas en [aquí](R/eda_correlations.R)
@@ -6,7 +10,7 @@ Basado en los hallazgos de las correlaciones observadas en [aquí](R/eda_correla
 
 Se observan correlaciones significativas entre
 
-### ↑ Potencia en FTP (v1)   ↓ EMG (en v2 y v3):
+### ↑ Potencia en FTP (v1) = ↓ EMG (en v2 y v3):
 
 Mayor eficiencia neuromuscular reflejada en una menor actividad electromiográfica (EMG) durante y al final la prueba de FTP en ciclistas se asocia a una mayor potencia en FTP.
 
