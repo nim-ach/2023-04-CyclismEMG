@@ -8,10 +8,6 @@ library(gtsummary)
 data("cyclist")
 
 ## Funciones auxiliares
-anonymize = function(x) {
-  as.factor(x = as.integer(x = factor(x = x)))
-}
-
 set_label = function(x, label) {
   attr(x, "label") <- label
   return(x)
@@ -19,90 +15,74 @@ set_label = function(x, label) {
 
 # Preparamos los datos ----------------------------------------------------
 
-## Anonimizamos a los sujetos
-cyclist[, sujetos := anonymize(sujetos)][]
-
-## Datos de torque
-torque_data <- melt.data.table(cyclist,
-                             id.vars = "sujetos",
-                             measure.vars = list(
-                               mean = c(
-                                 quad_der = "iso_mean_torque_quad_der_raw",
-                                 quad_izq = "iso_mean_torque_quad_izq_raw",
-                                 isqt_der = "iso_mean_torque_isquio_der_raw",
-                                 isqt_izq = "iso_mean_torque_isquio_izq_raw"),
-                               sd = c(
-                                 quad_der = "iso_sd_torque_quad_der_raw",
-                                 quad_izq = "iso_sd_torque_quad_izq_raw",
-                                 isqt_der = "iso_sd_torque_isquio_der_raw",
-                                 isqt_izq = "iso_sd_torque_isquio_izq_raw")
-                             ))
-torque_data[, variable := fcase(variable == 1, "quad_der",
-                              variable == 2, "quad_izq",
-                              variable == 3, "isqt_der",
-                              variable == 4, "isqt_izq")]
-torque_data[, side := fcase(grepl("der", variable), "Right",
-                          grepl("izq", variable), "Left")]
-torque_data[, variable := fcase(grepl("quad", variable), "Quadriceps",
-                              grepl("isqt", variable), "Hamstrings")]
-torque_data[, `:=`(
-  variable = set_label(variable, "Muscle"),
-  mean = set_label(mean, "Mean torque"),
-  sd = set_label(sd, "SD of torque"),
-  side = set_label(side, "Leg")
-)]
-
-torque_data <- torque_data[complete.cases(mean, sd), droplevels(.SD)]
 
 ## Datos de EMG
-emg_data <- cyclist[, c("emg_mean_1", "emg_median_1", "emg_peak_1")]
-
-emg_data[, `:=`(
-  emg_mean_1 = set_label(emg_mean_1, "Mean EMG (%)"),
-  emg_median_1 = set_label(emg_median_1, "Median EMG (%)"),
-  emg_peak_1 = set_label(emg_peak_1, "Peak EMG (%)")
+emg_data <- melt.data.table(data = cyclist,
+                id.vars = "id",
+                measure.vars = c("emg_media_1", "emg_mediana_1", "emg_peak_1",
+                                 "emg_media_2", "emg_mediana_2", "emg_peak_2",
+                                 "emg_media_3", "emg_mediana_3", "emg_peak_3"))
+emg_data[, emg := fcase(
+  grepl("emg_mediana", variable), "Median",
+  grepl("emg_media", variable), "Mean",
+  grepl("emg_peak", variable), "Peak"
 )]
+emg_data[, variable := fcase(
+  grepl("_1$", variable), "1/3",
+  grepl("_2$", variable), "2/3",
+  grepl("_3$", variable), "3/3"
+)]
+emg_data <- dcast.data.table(emg_data, id + emg ~ variable)
+tbl_1_emg <- emg_data[, lapply(.SD[,-1], function(i) {
+  k <- ifelse(nchar(round(mean(i))) > 3, 1, 2)
+  mu <- round(mean(i), k); sigma <- round(sd(i), k)
+  paste0(mu, " (", sigma, ")")
+}), keyby = list("EMG" = emg)] |>
+  melt(id.vars = 1) |>
+  setkey(EMG)
+tbl_1_emg <- dcast.data.table(tbl_1_emg, EMG ~ variable)
 
-emg_data[which.max(emg_peak_1), emg_peak_1 := emg_peak_1/10][]
 
 ## Datos de salto
 jump_data <- melt.data.table(data = cyclist,
-                             id.vars = "sujetos",
-                             measure.vars = c("jump_sj_fuerza_peak", "jump_sj_altura_m", "jump_sj_power_peak",
-                                              "jump_cmj_fuerza_peak", "jump_cmj_altura_m", "jump_cmj_power_peak",
-                                              "jump_abkv_fuerza_peak", "jump_abkv_altura_m", "jump_abkv_power_peak"))
+                             id.vars = "id",
+                             measure.vars = c("sj_peak_fuerza_n", "sj_altura_mt", "sj_peak_potencia_w",
+                                              "cmj_peak_fuerza_n", "cmj_altura_mt", "cmj_peak_potencia_w",
+                                              "aba_peak_fuerza_n", "aba_altura_mt", "aba_peak_potencia_w"))
 jump_data[, jump := fcase(grepl("sj", variable), "SJ",
                           grepl("cmj", variable), "CMJ",
-                          grepl("abkv", variable), "Abalakov")]
-jump_data[, variable := gsub("_sj|_cmj|_abkv", "", variable)]
-jump_data <- dcast.data.table(jump_data, sujetos + jump ~ variable)
-jump_data[, `:=`(
-  jump = set_label(jump, "Jump"),
-  jump_altura_m = set_label(jump_altura_m, "Jump height (m)"),
-  jump_fuerza_peak = set_label(jump_fuerza_peak, "Jump peak force (N)"),
-  jump_power_peak = set_label(jump_power_peak, "Jump power peak (W)")
-)]
+                          grepl("aba", variable), "Abalakov")]
+jump_data[, variable := gsub("^sj_|^cmj_|^aba_", "", variable)]
+jump_data <- dcast.data.table(jump_data, id + jump ~ variable)
+
+tbl_1_jump <- jump_data[, lapply(.SD[,-1], function(i) {
+  k <- ifelse(nchar(round(mean(i))) > 3, 1, 2)
+  mu <- round(mean(i), k); sigma <- round(sd(i), k)
+  paste0(mu, " (", sigma, ")")
+}), keyby = list("Jump type" = jump)] |>
+  melt(id.vars = 1) |>
+  transform(
+    variable = rep(c("Height (m)", "Peak force (N)", "Peak power (Watts)"), each = 3)
+  ) |> setkey(`Jump type`)
+names(tbl_1_jump) <- c("Jump type", "Characteristic", "Mean (SD)")
+tbl_1_jump <- dcast.data.table(tbl_1_jump, Characteristic ~ `Jump type`)
+
+tbl_merged <- cbind(tbl_1_emg, tbl_1_jump)
+
 
 # Generamos las tablas ----------------------------------------------------
 
-tbl_1_emg <- tbl_summary(data = emg_data,
-                         statistic = ~ "{mean} ({sd})",
-                         type = ~ "continuous")
-
-## Tabla de torque
-tbl_1_torque <- tbl_strata(
-  data = torque_data[, -1L],
-  strata = variable,
-  .tbl_fun =
-    ~ .x %>%
-    tbl_summary(by = side, missing = "no"),
-  .header = "**{strata}**"
-)
-
-## Tabla de salto
-tbl_1_jump <- tbl_summary(data = jump_data[, -1L],
-                          by = "jump",
-                          statistic = ~ "{mean} ({sd})",
-                          type = ~ "continuous") |>
-  modify_spanning_header(all_stat_cols() ~ "**Jump type**")
-
+tbl_1 <- tbl_merged |>
+  flextable() |>
+  line_spacing(space = .6) |>
+  fontsize(size = 8, part = "all") |>
+  autofit() |>
+  add_header_row(
+    values = c("", "FTP Window Measurement", "", "Jump type"),
+    colwidths = c(1,3,1,3)
+  ) |>
+  theme_vanilla() |>
+  border_inner_h(border = fp_border_default(color = "gray", width = 0.01), part = "all") |>
+  border(j = 4, border.right = fp_border_default(color = "white", width = 4), part = "all") |>
+  align(align = "center", part = "all")
+save(tbl_1, file = "docs/manuscript/tables/table-1.RData")

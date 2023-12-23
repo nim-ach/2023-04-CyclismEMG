@@ -1,0 +1,6 @@
+data.table
+Rcpp
+brms
+ggplot2
+bayestestR
+gtsummary

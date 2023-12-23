@@ -1,0 +1,15 @@
+Actualmente trabajando en:
+
+- Funciones de gráficos para modelos bayesianos:
+  - [x] Convergence plots
+  - [x] Traceplot
+  - [ ] Scatter plot
+- [x] Funciones para reporte de modelos
+- Generación de modelos:
+  - [ ] EMG ~ SJ, CMJ, ABK
+  - [ ] EMG ~ FTP
+  - [ ] EMG ~ AUI
+  - [ ] EMG ~ SJ + FTP + AUI
+  - [ ] EMG ~ CMJ + FTP + AUI
+  - [ ] EMG ~ ABK + FTP + AUI
+- [ ] Generación de gráficos para todos los modelos

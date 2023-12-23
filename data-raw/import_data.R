@@ -1,5 +1,6 @@
 library(readxl)
 library(data.table)
+library(datawizard)
 
 cyclist <- as.data.table(
   x = read_excel(
@@ -12,6 +13,8 @@ cyclist <- as.data.table(
 
 str(cyclist)
 
+cyclist[,id := rleid(id)][]
+cyclist <- standardize(cyclist, append = "_z")
 
 save(cyclist, file = "data/cyclist.RData")
 save(cyclist, file = "docs/manuscript/misc/cyclist.RData")
