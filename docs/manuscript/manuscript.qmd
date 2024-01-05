@@ -12,9 +12,9 @@ execute:
   error: false
 ---
 
-**Title**: Enhancing Cycling Performance: Unveiling the Interplay of Jump Force and Neuromuscular Efficiency on Isokinetic Torque in Elite Cyclists.
+**Title**: Enhancing Cycling Performance: Unveiling the Interplay of Jump Force and Neuromuscular Efficiency in Elite Cyclists.
 
-**Authors**: Diego Mabe Castro^1,2^, Matías Castillo-Aguilar^1,2^, Cristian Núñez-Espinosa^2,3^\*.
+**Authors**: Diego Mabe Castro^1,2^, Matías Castillo-Aguilar^1,2^, Cristian Núñez-Espinoza^2,3^\*.
 
 ::: {custom-style="Afiliation"}
 ^1^ Kinesiology Department, University of Magallanes, Punta Arenas, Chile.
@@ -144,14 +144,22 @@ $$
 \end{align}
 $$ {#eq-b-prior}
 
+#### Sensitivity analysis
+
+To ensure the stability and reliability of our Bayesian models and findings, we conducted sensitivity analyses to assess the impact of various prior distributions on model predictive performance. Specifically, we investigated variations in the scale and shape of weakly informative priors using leave-one-out cross-validation to compare the predictive performance of Bayesian models.
+
+We examined the expected log pointwise predictive density (ELPD) difference between models fitted with $\sigma$ values of 1, 5, and 100 in comparison to the utilized $\sigma$ of 10. For the univariate models exploring the effect of neuromuscular efficiency, our analysis revealed an ELPD difference ranging from -2.0 to 3.8, with standard errors spanning from 0.1 to 2.3. These results indicate robustness across a wide spectrum of $\sigma$ values, affirming the stability of our models.
+
+Similarly, when evaluating the impact of different scale parameters on multivariate models, we observed an ELPD difference spanning from -0.24 to 0.23, with standard errors ranging from 0.08 to 0.27. These findings provide substantial evidence supporting the robustness of our models to variations in scale parameters for priors in multivariate models as well.
+
 ### Model-fitting
 
-The Bayesian generalized linear models were fitted utilizing the `brm()` function from the *brms* package [@brms], employing 5 chains with 12000 iterations per chain. The initial 2000 iterations were designated as warmup to ascertain convergence, while the remaining iterations facilitated posterior distribution estimation of model coefficients (i.e., 50000 effective iterations in total), thus offering credible intervals to substantiate parameter uncertainty.
+The Bayesian generalized linear models were fitted utilizing the `brm()` function from the *brms* package [@brms], employing 5 chains with 12000 iterations per chain. The initial 2000 iterations were designated as warm up to ascertain convergence, while the remaining iterations facilitated posterior distribution estimation of model coefficients (i.e., 50000 effective iterations in total), thus offering credible intervals to substantiate parameter uncertainty.
 
-Following the **S**equential **E**ffect e**X**istence and s**I**gnificance **T**esting (SEXIT) framework to describe the effects from Bayesian models [@makowski2019indices], the median and the CI~95%~ (using the highest density interval) were reported as a measure of centrality and uncertainty, the probability of direction (p~direction~) as measure of existence, the proportion of the posterior probability distribution that falls outside the region of practical equivalence (ROPE) as a measure of practical significance (p~signif~), estimated as one tenth (1/10 = 0.1) of the SD of the response variable, and Bayes factor (BF~10~) using Savage-Dickey density ratio against the point null indicating if the null value has become less or more likely given the observed data [@heck2019caveat], using this as a measure of absolute magnitude of evidence in favor or against the null hypothesis (of no effect).
-Considering that ROPE, and therefore p~signif~, are sensitive to the predictor-level scale, continuous independent variables were standardized, which is relevant for models described in @eq-first-model and [-@eq-second-model], standardizing power and WAP as well in @eq-second-model for multivariate models.
+Following the **S**equential **E**ffect e**X**istence and s**I**gnificance **T**esting (SEXIT) framework to describe the effects from Bayesian models [@makowski2019indices], the median and the CI~95%~ (using the highest density interval) were reported as a measure of centrality and uncertainty, the probability of direction (p~direction~) as measure of existence, the proportion of the posterior probability distribution of the median sign that falls outside the region of practical equivalence (ROPE) as a measure of practical significance (p~signif~), estimated as one tenth (1/10 = 0.1) of the SD of the response variable, and Bayes factor (BF~10~) using Savage-Dickey density ratio against the point null indicating if the null value has become less or more likely given the observed data [@heck2019caveat], using this as a measure of absolute magnitude of evidence in favor or against the null hypothesis (of no effect).
+Considering that ROPE, and therefore p~signif~, are sensitive to the predictor-level scale, continuous independent variables were standardized, which is relevant for models described in @eq-first-model and [-@eq-second-model], standardizing the response variables power and WAP as well in @eq-second-model for multivariate models.
 
-For BF interpretation we’ve considered: BF = 1, no evidence; 1 < BF <= 3, anecdotal; 3 < BF <= 10, moderate; 10 < BF <= 30, strong; 30 < BF <= 100, very strong; and BF > 100, as extreme evidence [@jeffreys1998theory]. For the proportion of the posterior in the ROPE we considered: < 1%, significant; < 2.5%, probably significant; ≤ 97.5% & ≥ 2.5%, undecided significance; > 97.5%, probably neglible; > 99%, neglible [@makowski2019indices]. The convergence and stability of Bayesian sampling has been assessed using R-hat, which should be below 1.01 [@vehtari2019rank], and the Effective Sample Size (ESS), which should be greater than 1000 [@brms]. All the statistical analyses were computed and implemented in the R programming language [@rlanguage].
+For BF interpretation we've considered: BF = 1, no evidence; 1 < BF <= 3, anecdotal; 3 < BF <= 10, moderate; 10 < BF <= 30, strong; 30 < BF <= 100, very strong; and BF > 100, as extreme evidence [@jeffreys1998theory]. For the proportion of the posterior in the ROPE we considered: < 1%, significant; < 2.5%, probably significant; ≤ 97.5% & ≥ 2.5%, undecided significance; > 97.5%, probably negligible; > 99%, negligible [@makowski2019indices]. The convergence and stability of Bayesian sampling has been assessed using R-hat, which should be below 1.01 [@vehtari2019rank], the Effective Sample Size (ESS), which should be greater than 1000 [@brms], and visual inspection of traceplots and posterior predictive checks. All the statistical analyses were computed and implemented in the R programming language [@rlanguage].
 
 # Results
 
@@ -173,7 +181,7 @@ source(file = here::here("R/bda/_functions.R"))
 ```
 
 ```{r datos, include=FALSE}
-## Load the dataset
+## Load the data set
 data("cyclist")
 #load(here::here("docs/manuscript/misc/cyclist.RData"))
 
@@ -183,7 +191,7 @@ load(here::here("docs/manuscript/tables/table-2.RData"))
 load(here::here("docs/manuscript/tables/table-3.RData"))
 ```
 
-EMG activity across different windows of measurement during FTP testing and jump performance characteristics across the different types of jump can be seen in [table 1](#tbl-1).
+EMG activity across different measurement windows during FTP testing and jump performance characteristics across the different types of jump can be seen in [table 1](#tbl-1).
 
 ```{r}
 #| message: false
@@ -194,7 +202,7 @@ tbl_1 |>
 
 ## Neuromuscular efficiency
 
-Effects derived from unadjusted models shown that arm usage index, height in Abalakov and CMJ provides anecdotal evidence in favor of the hypothesis of the presence of an effect on neuromuscular efficiency. Similar evidence was found in relation to power and WAP on median EMG. However, after estimating the marginal effect while taking into account the influence of jump and FTP paramters, we were unable to find any evidence in favour of the presence of an effect in neuromuscular efficiency (see [figure 1](#fig-1)). Univariate and adjusted model parameter effects on median EMG activity, as well as model diagnostics are shown in [table 2](#tbl-2). 
+Effects derived from unadjusted models show that arm usage index (BF~10~ = 2.530), height in Abalakov (BF~10~ = 1.308) and CMJ (BF~10~ = 1.204) provide anecdotal evidence in favor of the hypothesis of the presence of an effect on neuromuscular efficiency. Similar evidence was found regarding power and WAP concerning median EMG. However, after estimating the marginal effect while taking into account the influence of jump and FTP parameters, we were unable to find any evidence in favor of the presence of an effect in neuromuscular efficiency (see [figure 1](#fig-1)). Univariate and adjusted model parameter effects on median EMG activity, as well as model diagnostics are shown in [table 2](#tbl-2). 
 
 ```{r}
 tbl_2 |> 
@@ -204,11 +212,13 @@ tbl_2 |>
 [**Table 2**]{#tbl-2}. Model estimates and 95% CI for jump and FTP parameters associated with median EMG activity. Parameter coefficients were estimated per separate in univariate and adjusted models. 
 
 ![](figures/fig-1.pdf)
-[**Figure 1**]{#fig-1}. A, Posterior distributions and shaded 50% CIs of the marginal effects of model paramters in the adjusted model; B, Empirical distribution of the response variable observed from the data to the distributions of simulated data from the posterior predictive distribution.
+[**Figure 1**]{#fig-1}. A, Posterior distributions and shaded 50% CIs of the marginal effects of model parameters in the adjusted model; B, Empirical distribution of the response variable observed from the data to the distributions of simulated data from the posterior predictive distribution.
 
 ## Muscle power and performance
 
-When inspecting the effect of median EMG on both power and WAP, we observed anecdotal evidence in favor of the absence of an effect and with low probability of being significant (p~signif~ ≤ 0.085) with an undecided significance based on proportion of the posterior distribution inside ROPE (Power, ROPE = 0.938; WAP, ROPE = 0.913), in the case of jump measures, we found. Univariate and adjusted model parameter effects on power and WAP, as well as model diagnostics are shown in [table 3](#tbl-3). 
+When inspecting the effect of median EMG on both power and WAP, we observed anecdotal evidence in favor of the absence of an effect and with low probability of being significant (Power, p~signif~ = 0.057; WAP, p~signif~ = 0.085) with an undecided significance based on proportion of the posterior distribution inside ROPE (Power, ROPE = 0.938; WAP, ROPE = 0.913) and very strong evidence in favor of the null hypothesis (Power, BF~10~ = 0.006; WAP, BF~10~ = 0.008) suggesting that there is evidence that median EMG assessed during FTP does not exert an effect on muscle performance indicators derived from FTP assessment, even after controlling for the marginal effect of jump height (Power, BF~10~ = 0.004; WAP, BF~10~ = 0.005). 
+
+In the case of jump measures, we found anecdotal evidence of a significant effect of abalakov height on WAP (ROPE = 0.005; p~signif~ = 0.991) but of undecided significance for power (ROPE = 0.032; p~signif~ = 0.469), similar findings of probably significant effects were found on CMJ (ROPE = 0.019; p~signif~ = 0.964) and SJ jump on WAP (ROPE = 0.014; p~signif~ = 0.978) but not power. In fully adjusted models only SJ height remained probably significant for WAP (ROPE = 0.016; p~signif~ = 0.972), but not for power (ROPE = 0.124; p~signif~ = 0.739). [Table 3](#tbl-3) presents the univariate and adjusted model parameter effects on power and WAP, along with model diagnostics.
 
 ```{r}
 tbl_3 |> 
@@ -218,19 +228,25 @@ tbl_3 |>
 [**Table 3**]{#tbl-3}. Model estimates in terms of Z-score change in response to one SD change in independent variables and 95% CI for jump and median EMG activity parameters associated with Power and WAP. Parameter coefficients were estimated per separate in univariate and adjusted models. 
 
 ![](figures/fig-2.pdf)
-[**Figure 2**]{#fig-2}. A, Posterior distributions and shaded 50% CIs of the marginal effects of model paramters in the adjusted multivariate model; B and C, Empirical distributions of the response variable observed from the data to the distributions of simulated data from the posterior predictive distribution.
+[**Figure 2**]{#fig-2}. A, Posterior distributions and shaded 50% CIs of the marginal effects of model parameters in the adjusted multivariate model; B and C, Empirical distributions of the response variable observed from the data to the distributions of simulated data from the posterior predictive distribution.
 
 # Discussion
 
-[...].
+Our study employed a Bayesian framework to investigate the complex relationships among key performance factors in elite cyclists. Specifically, it focused on understanding the associations between neuromuscular efficiency during FTP tests, and performance metrics derived from jump assessments and FTP measurements.
 
-[...].
+Initial analyses indicated potential connections between neuromuscular efficiency, represented by EMG during taxing assessments, and performance indicators like jump height and FTP measurements. However, subsequent rigorous evaluations, particularly after accounting for variables such as jump height and FTP parameters, revealed insufficient evidence supporting a direct impact of EMG on muscle performance indicators derived from FTP assessments.
+
+Sensitivity analyses examined the influence of various prior distributions on model predictive performance, demonstrating consistent outcomes across different prior specifications. Both univariate and multivariate models exhibited resilience, reinforcing the consistency of our conclusions regardless of variations in prior parameters.
+
+The absence of a direct influence of EMG on muscle performance indicators suggests that while EMG may offer insights into physiological responses during taxing assessments, its direct impact on specific muscle performance indicators, notably power and weight-adjusted power derived from FTP assessments, may be less pronounced among elite cyclists than initially assumed.
+
+These outcomes have significant implications for research and practical applications in high-performance cycling. They underscore the intricate nature of interactions among neuromuscular efficiency, EMG recordings, and targeted performance metrics, warranting a comprehensive understanding of factors impacting performance outcomes in elite cyclists.
 
 [...].
 
 # Conclusion
 
-[...]. 
+Our study provides insights into the associations between neuromuscular efficiency and performance metrics in elite cyclists. While our findings suggest a lack of direct influence of EMG on muscle performance indicators derived from FTP assessments, they advocate for continued exploration to understand the intricate network of factors influencing athletic performance among elite cyclists. 
 
 # Acknowledgements
 

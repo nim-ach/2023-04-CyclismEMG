@@ -180,3 +180,85 @@ evr.ci <- function(evr, bf = 1, k = 2) {
              conf.high = x_r[2],
              BF = bf)
 }
+# Compute ROPE ------------------------------------------------------------
+
+custom_rope <- function(mod, vars, rope_ci = c(-.1, .1)) {
+  ropes <- as.data.table(mod)
+  if(is.list(rope_ci)) {
+    warning("\"rope_ci\" is a list object, defaulting to using the min/max of the unlisted input. Adjust your expectations accordingly.")
+    rope_ci <- range(unlist(rope_ci, use.names = FALSE))
+    warning(paste("Using", paste0("[", paste0(rope_ci, collapse = ", "),"]"), "as \"rope_ci\" for ROPE calculation"))
+  }
+  ropes <- lapply(ropes, function(i) {
+    mean(i %between% rope_ci)
+  })
+  if (missing(vars)) {
+    ropes <- transpose(l = ropes,
+              keep.names = "Parameter") |>
+      as.data.table(keep.rownames = TRUE) |>
+      `names<-`(c("Parameter", "ROPE"))
+    return(ropes)
+  }
+  ind <- grep(
+    pattern = paste0(vars, collapse = "|"),
+    x = names(ropes),
+    ignore.case = TRUE,
+    value = TRUE
+  )
+  transpose(l = ropes[ind],
+            keep.names = "Parameter") |>
+    as.data.table(keep.rownames = TRUE) |>
+    `names<-`(c("Parameter", "p_ROPE"))
+}
+
+
+# Custom PS ---------------------------------------------------------------
+
+custom_ps <- function(mod, vars, rope_ci = c(-.1, .1)) {
+  ps <- as.data.table(mod)
+  if(is.list(rope_ci)) {
+    warning("\"rope_ci\" is a list object, defaulting to using the min/max of the unlisted input. Adjust your expectations accordingly.")
+    rope_ci <- range(unlist(rope_ci, use.names = FALSE))
+    warning(paste("Using", paste0("[", paste0(rope_ci, collapse = ", "),"]"), "as \"rope_ci\" for p(significance) calculation"))
+  }
+  ps <- lapply(ps, function(i) {
+    max(c(length(i[i > abs(rope_ci)]) / length(i),
+          length(i[i < -abs(rope_ci)]) / length(i)))
+  })
+  if (missing(vars)) {
+    ps <- transpose(l = ps,
+                       keep.names = "Parameter") |>
+      as.data.table(keep.rownames = TRUE) |>
+      `names<-`(c("Parameter", "P_signif"))
+    return(ps)
+  }
+  ind <- grep(
+    pattern = paste0(vars, collapse = "|"),
+    x = names(ps),
+    ignore.case = TRUE,
+    value = TRUE
+  )
+  transpose(l = ps[ind],
+            keep.names = "Parameter") |>
+    as.data.table(keep.rownames = TRUE) |>
+    `names<-`(c("Parameter", "ps"))
+}
+
+
+# Prep table with SEXIT indices -------------------------------------------
+
+prep_table <- function(tbl, model, rope_ci = NULL) {
+  out <- as.data.table(tbl, key = "Parameter")
+  rm_ind <- grep("ps|ROPE", names(out), ignore.case = TRUE, value = TRUE)
+  out[, (rm_ind) := NULL]
+  if(is.null(stats::formula(model)$response)) {
+    rope_ci <- rope_range(model)
+  } else {
+    if(is.null(rope_ci))
+      warning("Model is multivariate, defaulting to [-0.1, 0.1] as the rope range")
+    rope_ci <- c(-.1, .1)
+  }
+  out |>
+    merge.data.table(custom_ps(model, "b_", rope_ci = rope_ci), by = "Parameter") |>
+    merge.data.table(custom_rope(model, "b_", rope_ci = rope_ci), by = "Parameter")
+}

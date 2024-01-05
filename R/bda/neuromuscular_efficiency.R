@@ -42,8 +42,7 @@ if (file.exists("R/bda/bm/emg_jump.RData")) {
 tbl_a <- describe_posterior(
   posteriors = m_a1,
   ci_method = "hdi",
-  test = c("pd", "p_significance", "rope", "bf"),
-  rope_ci = 1)
+  test = c("pd", "p_significance", "p_rope", "bf"))
 save(tbl_a, file = "docs/manuscript/tables/summary_emg_jump.RData")
 
 # EMG ~ FTP ---------------------------------------------------------------
@@ -65,8 +64,7 @@ if (file.exists("R/bda/bm/emg_ftp.RData")) {
 tbl_b <- describe_posterior(
   posteriors = m_b1,
   ci_method = "hdi",
-  test = c("pd", "p_significance", "rope", "bf"),
-  rope_ci = 1)
+  test = c("pd", "p_significance", "p_rope", "bf"))
 save(tbl_b, file = "docs/manuscript/tables/summary_emg_ftp.RData")
 
 # EMG ~ AUI ---------------------------------------------------------------
@@ -88,8 +86,7 @@ if (file.exists("R/bda/bm/emg_aui.RData")) {
 tbl_c <- describe_posterior(
   posteriors = m_c1,
   ci_method = "hdi",
-  test = c("pd", "p_significance", "rope", "bf"),
-  rope_ci = 1)
+  test = c("pd", "p_significance", "p_rope", "bf"))
 save(tbl_c, file = "docs/manuscript/tables/summary_emg_aui.RData")
 
 # EMG ~ Jump + FTP + AUI --------------------------------------------------
@@ -114,6 +111,5 @@ if (file.exists("R/bda/bm/emg_full_adj.RData")) {
 tbl_d <- describe_posterior(
   posteriors = m_d1,
   ci_method = "hdi",
-  test = c("pd", "p_significance", "rope", "bf"),
-  rope_ci = 1)
+  test = c("pd", "p_significance", "p_rope", "bf"))
 save(tbl_d, file = "docs/manuscript/tables/summary_emg_full_adj.RData")

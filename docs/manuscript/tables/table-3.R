@@ -3,6 +3,8 @@ library(brms)
 library(flextable)
 library(bayestestR)
 
+source("R/bda/_functions.R")
+
 load("R/bda/bm/ftp_emg.RData")
 load("R/bda/bm/ftp_jump.RData")
 load("R/bda/bm/ftp_full_adj.RData")
@@ -12,34 +14,11 @@ load("docs/manuscript/tables/summary_ftp_emg.RData")
 load("docs/manuscript/tables/summary_ftp_full_adj.RData")
 
 
-# Compute ROPE ------------------------------------------------------------
-
-custom_rope <- function(mod, vars) {
-  ropes <- as.data.table(mod) |>
-    lapply(function(i) {
-      mean(i %between% c(-.1, .1))
-    })
-  if (missing(vars)) return(ropes)
-  ind <- grep(
-    pattern = paste0(vars, collapse = "|"),
-    x = names(ropes),
-    ignore.case = TRUE,
-    value = TRUE
-  )
-  transpose(l = ropes[ind],
-            keep.names = "Parameter") |>
-    as.data.table(keep.rownames = TRUE) |>
-    `names<-`(c("Parameter", "ROPE"))
-}
-
 # -------------------------------------------------------------------------
 
-tbl_a2 <- as.data.table(tbl_a2, key = "Parameter") |>
-  merge.data.table(custom_rope(m_a2, "b_"), by = "Parameter")
-tbl_b2 <- as.data.table(tbl_b2, key = "Parameter") |>
-  merge.data.table(custom_rope(m_b2, "b_"), by = "Parameter")
-tbl_c2 <- as.data.table(tbl_c2, key = "Parameter") |>
-  merge.data.table(custom_rope(m_c2, "b_"), by = "Parameter")
+tbl_a2 <- prep_table(tbl_a2, m_a2, rope_ci = c(-.1, .1))
+tbl_b2 <- prep_table(tbl_b2, m_b2, rope_ci = c(-.1, .1))
+tbl_c2 <- prep_table(tbl_c2, m_c2, rope_ci = c(-.1, .1))
 
 tbl_data <- list(Jump = tbl_a2, EMG = tbl_b2, Adjusted = tbl_c2) |>
   rbindlist(idcol = "Model")
@@ -51,15 +30,15 @@ tbl_data[, Outcome := fcase(
 
 tbl_data[, Parameter := fcase(
   grepl("Intercept", Parameter), "Intercept",
-  grepl("aba_altura", Parameter), "Abalakov Heigth",
-  grepl("cmj_altura", Parameter), "CMJ Heigth",
-  grepl("sj_altura", Parameter), "SJ Heigth",
+  grepl("aba_altura", Parameter), "Abalakov Height",
+  grepl("cmj_altura", Parameter), "CMJ Height",
+  grepl("sj_altura", Parameter), "SJ Height",
   grepl("median_emg", Parameter), "Median EMG activity"
 )]
 
 tbl_data[, Parameter := factor(
   x = Parameter,
-  levels = c("Intercept", "Abalakov Heigth", "CMJ Heigth", "SJ Heigth", "Median EMG activity")
+  levels = c("Intercept", "Abalakov Height", "CMJ Height", "SJ Height", "Median EMG activity")
 )]
 
 setkey(tbl_data, Model, Outcome, Parameter)
@@ -72,11 +51,11 @@ tbl_data[, `:=`(
   ESS = round(ESS)
 )]
 
-ind <- c("Median", "CI_low", "CI_high", "pd", "ps", "BF", "ROPE")
+ind <- c("Median", "CI_low", "CI_high", "pd", "ps", "BF", "p_ROPE")
 tbl_data[, (ind) := lapply(.SD, round, digits = 3), .SDcols = ind]
 
 names(tbl_data) <- c("Model", "Outcome", "Parameter", "Estimate", "Low", "High",
-                     "P (direction)", "P (significance)", "R-hat", "ESS", "ROPE", "BF")
+                     "P (direction)", "R-hat", "ESS", "P (significance)", "ROPE", "BF")
 data.table::setcolorder(x = tbl_data,
                         neworder = c("Model", "Outcome", "Parameter", "Estimate", "Low", "High",
                                      "P (direction)", "P (significance)", "ROPE", "BF", "R-hat", "ESS"))
